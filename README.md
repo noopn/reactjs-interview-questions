@@ -157,7 +157,7 @@
     }
     ```
 
-    ![state](./images/state.jpg)
+    ![state](image/state.jpg)
 
 9. ### React 中 porps 是什么?
 
