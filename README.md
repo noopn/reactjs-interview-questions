@@ -18,6 +18,11 @@
 |8  | [React中state 是什么?](#React中state是什么) |
 |9  | [React中porps 是什么?](#React中porps是什么) |
 |10 | [state和porps 的区别?](#state和porps的区别) |
+|11 | [为什么不应该直接更新state?](#为什么不应该直接更新state) |
+|12 | [回调函数作为setState()参数的目的是什么?](#回调函数作为setState()参数的目的是什么)
+|13 | [HTML和React事件绑定的区别是什么?](#HTML和React事件绑定的区别是什么) |
+|14 | [如何在JSX回调中绑定方法或事件绑定?](#如何在JSX回调中绑定方法或事件绑定) |
+|15 | [如何向事件绑定或回调中传递一个参数?](#如何向事件绑定或回调中传递一个参数) |
 
 ## React 核心
 
@@ -132,7 +137,7 @@
 
     *`React.PureComponent`* 与 *`React.Component`* 极为相似， 除了处理了 `shouldComponentUpdate()` 方法，当 props 或state 改变, *PureComponent* 将会浅层比较 state 和 props。另一方面， *Component*  在输出的时候不会比较porps 和 state, 因此，无论何时 `shouldComponentUpdate` 被调用组件总会重新渲染。
 
-8. ### React中state 是什么?
+8. ### React中state是什么?
 
     组件的 *State（状态）* 是一个对象，在组件的整个生命周期中保存一些可能改变的信息。 组件状态应该尽可能的简单，尽可能使有状态组件数量最小。 让我们创建一个具有消息状态的用户组件，
 
@@ -159,7 +164,7 @@
 
     ![state](image/state.jpg)
 
-9. ### React中porps 是什么?
+9. ### React中porps是什么?
 
     *Props* 是组件传入的属性. 它们是单个值或包含一组值的对象，创建时使用类似于HTML标记属性的命名约定传入到组件中.它们是从父组件传递到子组件的数据。
 
@@ -184,3 +189,103 @@
 10. ### state和porps的区别?
 
     *props* 和 *state* 都是 javascript 纯对象. 他们都保存影响渲染的数据, 但它们在组件方面的功能却不同。 Props 类似于函数参数传递给组件， 而 state 类似于函数中声明的变量在组件内部中管理。
+
+11. ### 为什么不应该直接更新state?
+
+    为什么不应该直接更新state，那么它不会重新渲染组件.
+
+    ```javascript
+    //错误
+    this.state.message = 'Hello world'
+    ```
+
+    使用 `setState()` 方法代替. 他会为组件的state对象计划（安排）更新. 当state改变, 组件会重新渲染。
+
+    ```javascript
+    //正确
+    this.setState({ message: 'Hello World' })
+    ```
+
+    **提示:**你可以使用 *constructor* 或javascript最新class声明语法中的任意一个，直接指定state对象。
+
+12. ### 回调函数作为setState()参数的目的是什么?
+
+    当setState执行完成，回调函数会被执行，而且组件会被重新渲染。 因 `setState()` 是 **异步的** 所以回调函数被用来发起一些请求。
+
+    **提示:** 推荐使用生命周期函数而不是使用回调函数
+
+    ```javascript
+    setState({ name: 'John' }, () => console.log('The name has updated and component re-rendered'))
+    ```
+
+13. ### HTML和React事件绑定的区别是什么?
+
+    1. HTML中时间名字必须是 *小写*:
+
+    ```html
+    <button onclick='activateLasers()'>
+    ```
+
+    然而React中遵循 *驼峰命名* 约定:
+
+    ```jsx harmony
+    <button onClick={activateLasers}>
+    ```
+
+    2. HTML中可以返回 `false` 阻止默认行为:
+
+    ```html
+    <a href='#' onclick='console.log("The link was clicked."); return false;' />
+    ```
+
+    然而React中必须明确调用 `preventDefault()`:
+
+    ```javascript
+    function handleClick(event) {
+      event.preventDefault()
+      console.log('The link was clicked.')
+    }
+    ```
+
+14. ### 如何在JSX回调中绑定方法或事件绑定?
+
+    有3中可行的方法达到目的:
+
+    1.	**Constructor中绑定:** 在javascript的class中, 方法默认不会绑定执行上下文. 在React的事件绑定中也是同样的. 通常在constructor中绑定.
+
+    ```javascript
+    class Component extends React.Componenet {
+      constructor(props) {
+        super(props)
+        this.handleClick = this.handleClick.bind(this)
+      }
+
+      handleClick() {
+        // ...
+      }
+    }
+    ```
+
+    2. **Public class fields syntax（类的字段语法）:** 如果你不喜欢bind方法，那么 *public class fields syntax（类的字段语法）* 可以正确的绑定回调。
+
+    ```jsx harmony
+    handleClick = () => {
+      console.log('this is:', this)
+    }
+    ```
+
+    ```jsx harmony
+    <button onClick={this.handleClick}>
+      {'Click me'}
+    </button>
+    ```
+
+    3. **回调中的箭头函数:** 你可以在回调函数中直接使用 *箭头函数*.
+
+    ```jsx harmony
+    <button onClick={(event) => this.handleClick(event)}>
+      {'Click me'}
+    </button>
+    ```
+
+    **Note:** 如果回调函数作为属性传递到组件, 这些组件可能会不必要的重新渲染. 鉴于此,考虑到性能问题， 使用`.bind()` 或 *public class fields syntax（类的字段语法）* 是首选的.
