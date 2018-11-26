@@ -8,16 +8,16 @@
 | 序号. | 问题 |
 | --- | --------- |
 |   | **React 核心** |
-|1  | [什么是React?](#what-is-react) |
-|2  | [React 主要特点是什么?](#what-are-the-major-features-of-react) |
-|3  | [什么是JSX？](#what-is-jsx) |
-|4  | [元素和组件有什么区别？](#what-is-the-difference-between-element-and-component) |
-|5  | [如何在React中创建组件？](#how-to-create-components-in-react) |
-|6  | [何时使用Class Component 替函 Function Component?](#when-to-use-a-class-component-over-a-function-component) |
-|7  | [什么是 Pure Components?](#what-are-pure-components) |
-|8  | [React 中 state 是什么?](#what-is-state-in-react) |
-|9  | [React 中 porps 是什么?](#what-are-props-in-react) |
-|10 | [state 和 porps 的区别?](#what-is-the-difference-between-state-and-props) |
+|1  | [什么是React?](#什么是React) |
+|2  | [React 主要特点是什么?](#React 主要特点是什么) |
+|3  | [什么是JSX？](#什么是JSX) |
+|4  | [元素和组件有什么区别？](#元素和组件有什么区别) |
+|5  | [如何在React中创建组件？](#如何在React中创建组件) |
+|6  | [何时使用Class Component 替函 Function Component?](#何时使用Class Component 替函 Function Component) |
+|7  | [什么是 Pure Components?](#什么是 Pure Components) |
+|8  | [React 中 state 是什么?](#React 中 state 是什么) |
+|9  | [React 中 porps 是什么?](#React 中 porps 是什么) |
+|10 | [state 和 porps 的区别?](#state 和 porps 的区别) |
 
 ## React 核心
 
@@ -32,7 +32,7 @@
     * 考虑到RealDOM操作很昂贵，它使用 **VirtualDOM** 而不是 RealDOM 。
     * 支持 **服务器端渲染**。
     * 遵循 *单向** 数据流或数据绑定。
-    * 使用 **可重用/可组合的** UI UI组件来开发视图。
+    * 使用 **可重用/可组合的** UI 组件来开发视图。
 
 3. ### 什么是JSX?
 
@@ -132,7 +132,7 @@
 
     *`React.PureComponent`* 与 *`React.Component`* 极为相似， 除了处理了 `shouldComponentUpdate()` 方法，当 props 或state 改变, *PureComponent* 将会浅层比较 state 和 props。另一方面， *Component*  在输出的时候不会比较porps 和 state, 因此，无论何时 `shouldComponentUpdate` 被调用组件总会重新渲染。
 
-8. ### What is state in React?
+8. ### React 中 state 是什么?
 
     组件的 *State（状态）* 是一个对象，在组件的整个生命周期中保存一些可能改变的信息。 组件状态应该尽可能的简单，尽可能使有状态组件数量最小。 让我们创建一个具有消息状态的用户组件，
 
@@ -181,6 +181,6 @@
     props.reactProp
     ```
 
-10. ### state 和 porps 的区别??
+10. ### state 和 porps 的区别?
 
     *props* 和 *state* 都是 javascript 纯对象. 他们都保存影响渲染的数据, 但它们在组件方面的功能却不同。 Props 类似于函数参数传递给组件， 而 state 类似于函数中声明的变量在组件内部中管理。
