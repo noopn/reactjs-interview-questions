@@ -9,15 +9,15 @@
 | --- | --------- |
 |   | **React 核心** |
 |1  | [什么是React?](#什么是React) |
-|2  | [React 主要特点是什么?](#React 主要特点是什么) |
+|2  | [React 主要特点是什么?](#React主要特点是什么) |
 |3  | [什么是JSX？](#什么是JSX) |
 |4  | [元素和组件有什么区别？](#元素和组件有什么区别) |
 |5  | [如何在React中创建组件？](#如何在React中创建组件) |
-|6  | [何时使用Class Component 替函 Function Component?](#何时使用Class Component 替函 Function Component) |
-|7  | [什么是 Pure Components?](#什么是 Pure Components) |
-|8  | [React 中 state 是什么?](#React 中 state 是什么) |
-|9  | [React 中 porps 是什么?](#React 中 porps 是什么) |
-|10 | [state 和 porps 的区别?](#state 和 porps 的区别) |
+|6  | [何时使用Class Component 替函 Function Component?](#何时使用ClassComponent替函FunctionComponent) |
+|7  | [什么是 Pure Components?](#什么是PureComponents) |
+|8  | [React 中 state 是什么?](#React中state是什么) |
+|9  | [React 中 porps 是什么?](#React中porps是什么) |
+|10 | [state 和 porps 的区别?](#state和porps的区别) |
 
 ## React 核心
 
