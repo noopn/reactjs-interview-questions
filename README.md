@@ -25,7 +25,7 @@
 |15 | [如何向事件绑定或回调中传递一个参数？](#如何向事件绑定或回调中传递一个参数) |
 |16 | [React中合成事件是什么？](#React中合成事件是什么) |
 |17 | [什么是内联条件表达式？](#什么是内联条件表达式) |
-|18 | [什么是key属性，在数组中使用它们的好处是什么？](#什么是key属性，在数组中使用它们的好处是什么) |
+|18 | [什么是key属性，在数组中使用它们的好处是什么？](#什么是key属性在数组中使用它们的好处是什么) |
 |19 | [refs有什么用？](#refs有什么用) |
 |20 | [如何创建refs？](#如何创建refs) |  
 |21 | [什么是 forward refs？](#什么是forward-refs) |
@@ -33,6 +33,11 @@
 |23 | [为什么曾经refs是String类型？](#为什么曾经refs是String类型) |
 |24 | [什么是虚拟DOM？](#什么是虚拟DOM) |
 |25 | [虚拟DOM是如何工作的？](#虚拟DOM是如何工作的) |
+|26 | [Shadow DOM 和 Virtual DOM 的区别?](#Shadow-DOM和Virtual-DOM的区别) |
+|27 | [React Fiber 是什么?](#React-Fiber是什么) |
+|28 | [React Fiber 出现的主要目的是什么?](#ReactFiber出现的主要目的是什么) |
+|29 | [什么是受控组件?](#什么是受控组件) |
+|30 | [什么是非受控组件?](#什么是非受控组件) |
 
 ## React 核心
 
@@ -499,3 +504,62 @@
 
     3. 一旦计算完成，真实 DOM 只会更新确实被改变的部分。
         ![vdom3](image/vdom3.png)
+
+26. ### Shadow DOM 和 Virtual DOM 的区别?
+
+    *Shadow DOM* 浏览器技术为在 *web components* 中变量和css作用域主要设计的。 *Virtual DOM* 是JavaScript库在浏览器API 上贯彻的理念。
+
+27. ### 什么事React Fiber?
+
+    Fiber 是React 16 中新的协调引擎或核心算法的重新实现。React Fiber的目标是提高其在诸如动画、布局、手势、暂停和中止的能力等领域的性能，重用工作并为不同类型的更新分配优先级; and new concurrency primitives.
+
+28. ### ReactFiber出现的主要目的是什么?
+
+    React Fiber 的目标是提高其在动画，布局，手势，等领域的性能. 首要的特点是 **增联渲染**: 可以把渲染工作切割成多k块，在多个画面中进行渲染.
+
+29. ### 什么是受控组件?
+
+    在用户输入后控制（劫持）了表单中的输入元素的组件叫做 **受控组件**, 即, 每一个 state 的改变都会有相关的处理函数
+
+    例如, 把名字全部写为大写字母, 使用像下面的处理,
+
+    ```javascript
+    handleChange(event) {
+      this.setState({value: event.target.value.toUpperCase()})
+    }
+    ```
+
+30. ### 什么是非受控组件?
+
+    **非受控组件** 是那些在自己内部存储状态的组件, 当你需要时，通过使用 ref 访问元素找到当前的值。这有点像传统的HTML。
+
+    UserProfile 组件中, `name` 输入使用 ref 接入.
+
+    ```jsx harmony
+    class UserProfile extends React.Component {
+      constructor(props) {
+        super(props)
+        this.handleSubmit = this.handleSubmit.bind(this)
+        this.input = React.createRef()
+      }
+
+      handleSubmit(event) {
+        alert('A name was submitted: ' + this.input.current.value)
+        event.preventDefault()
+      }
+
+      render() {
+        return (
+          <form onSubmit={this.handleSubmit}>
+            <label>
+              {'Name:'}
+              <input type="text" ref={this.input} />
+            </label>
+            <input type="submit" value="Submit" />
+          </form>
+        );
+      }
+    }
+    ```
+
+    一般情况下, 推荐使用受控组件实现表单.
