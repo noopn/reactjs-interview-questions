@@ -38,6 +38,11 @@
 |28 | [React Fiber 出现的主要目的是什么?](#ReactFiber出现的主要目的是什么) |
 |29 | [什么是受控组件?](#什么是受控组件) |
 |30 | [什么是非受控组件?](#什么是非受控组件) |
+|31 | [createElement 和 cloneElement 的区别](#createElement和cloneElement的区别) |
+|32 | [React 中 State 提升是什么?](#React中State提升是什么) |
+|33 | [组件生命周期的不同阶段是什么?](#组件生命周期的不同阶段是什么) |
+|34 | [React 生命周期方法是什么?](#React生命周期方法是什么) |
+|35 | [什么是高阶组件?](#什么是高阶组件) |
 
 ## React 核心
 
@@ -515,7 +520,7 @@
 
 28. ### ReactFiber出现的主要目的是什么?
 
-    React Fiber 的目标是提高其在动画，布局，手势，等领域的性能. 首要的特点是 **增联渲染**: 可以把渲染工作切割成多k块，在多个画面中进行渲染.
+    React Fiber 的目标是提高其在动画，布局，手势，等领域的性能. 首要的特点是 **增量渲染**: 可以把渲染工作切割成多k块，在多个画面中进行渲染.
 
 29. ### 什么是受控组件?
 
@@ -563,3 +568,54 @@
     ```
 
     一般情况下, 推荐使用受控组件实现表单.
+31. ### createElement 和 cloneElement 的区别?
+
+    JSX 元素将会被编译成 `React.createElement()` 函数用来创建 react 元素，他们将用于UI的对象表示. 然而， `cloneElement` 用来克隆一个元素并传入新的props.
+
+32. ### React 中 State 提升是什么?
+
+    当几个组件需要共享相同的可变数据时，建议 *提升共享状态* 到它们最近的公共祖先元素. 意味着如果两个子组件共享相同的数据时来自他们的父元素。 把状态移动到父元素代替在每个子元素中都有自己的状态。
+
+33. ### 组件生命周期的不同阶段是什么?
+
+    组件生命周期有四个不同阶段.
+
+    1. **Initialization（初始化）:** 组件准备设置初始化 state 和 默认的 props.
+
+    2. **Mounting（挂载）:** 组件随时可以在浏览器元素中挂载. 这个阶段包括 `componentWillMount()` 和 `componentDidMount()` 生命周期方法.
+
+    3. **Updating（更新）:**  组件通过两种方式更新, 发送新的props 和 更新state. 这个阶段包括 `shouldComponentUpdate()`, `componentWillUpdate()` 和 `componentDidUpdate()` 生命周期方法.
+
+    4. **Unmounting（卸载）:** 组件不再需要，从浏览器DOM中被卸载. 这个阶段包括 `componentWillUnmount()` 生命周期方法.
+        ![phases](images/phases.png)
+
+    <!-- TODO: new lifecycle methods in React v16 -->
+
+34. ### React 生命周期方法是什么?
+
+    - **componentWillMount:** 在渲染前执行，在根组件中用作App级别的配置。
+    - **componentDidMount:** 在第一次渲染后执行，这里应该发生，所有的请求，元素、state 更新,事件监听。
+    - **componentWillReceiveProps:** 当某些props更新触发了state的改变时执行。
+    - **shouldComponentUpdate:** 决定组件是否更新. 默认返回true.在 state 或 props 更新后如果确定组件不需要冲渲染可以返回false.这是一个提升性能非常好的地方，因为它可以让你在组件接收到新的props避免重新渲染。
+    - **componentWillUpdate:** 在重渲染前执行，如果有通过 `shouldComponentUpdate()` 确认的state 或 props 的改变，返回true.
+    - **componentDidUpdate:** 大多数使用它在prop 或 state 改变时响应更新DOM。
+    - **componentWillUnmount:** 它将用于取消任何传出的网络请求，或移除所有组件应该绑定的事件监听函数。
+
+    <!-- TODO: new lifecycle methods in React v16 -->
+
+35. ### 什么是高阶组件?
+
+    *高阶组件* (*HOC*) 是一个接受组件并返回新组件的函数. 基本上,它是从React 组合特定中派生的一种模式。
+
+    可以叫它们 **pure components** 因为它们可以接受任何动态提供的子组件，它们不会修改或复制来自输入组件的任何行为。
+
+    ```javascript
+    const EnhancedComponent = higherOrderComponent(WrappedComponent)
+    ```
+
+    HOC 可以在很多场景中使用:
+
+    1. 代码重用、逻辑 和 bootstrap abstraction。
+    2. 渲染劫持。
+    3. 状态抽象和控制。
+    4. Props 控制。
