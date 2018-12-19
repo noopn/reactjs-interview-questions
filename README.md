@@ -43,6 +43,11 @@
 |33 | [组件生命周期的不同阶段是什么?](#组件生命周期的不同阶段是什么) |
 |34 | [React 生命周期方法是什么?](#React生命周期方法是什么) |
 |35 | [什么是高阶组件?](#什么是高阶组件) |
+|36 | [如何创建高阶组件的 props 代理?](#如何创建高阶组件的props代理) |
+|37 | [什么是 context?](#什么是context) |
+|38 | [什么是 children porp?](#什么是childrenporp) |
+|39 | [在 react 中怎么写注释?](#在react中怎么写注释) |
+|40 | [使用带 props 参数的 super 构造函数的目的是什么?](#使用带props参数的super构造函数的目的是什么) |
 
 ## React 核心
 
@@ -587,7 +592,7 @@
     3. **Updating（更新）:**  组件通过两种方式更新, 发送新的props 和 更新state. 这个阶段包括 `shouldComponentUpdate()`, `componentWillUpdate()` 和 `componentDidUpdate()` 生命周期方法.
 
     4. **Unmounting（卸载）:** 组件不再需要，从浏览器DOM中被卸载. 这个阶段包括 `componentWillUnmount()` 生命周期方法.
-        ![phases](images/phases.png)
+        ![phases](image/phases.png)
 
     <!-- TODO: new lifecycle methods in React v16 -->
 
@@ -619,3 +624,115 @@
     2. 渲染劫持。
     3. 状态抽象和控制。
     4. Props 控制。
+
+36. ### 如何创建高阶组件的 props 代理？
+
+    你可以通过组件中使用 *props 代理* 的形式添加或编辑 props:
+
+    ```jsx harmony
+    function HOC(WrappedComponent) {
+      return class Test extends Component {
+        render() {
+          const newProps = {
+            title: 'New Header',
+            footer: false,
+            showFeatureX: false,
+            showFeatureY: true
+          }
+
+          return <WrappedComponent {...this.props} {...newProps} />
+        }
+      }
+    }
+    ```
+
+37. ### 什么是 context?
+
+    *Context* 规定一种方法，穿过组件数传递数据，不需要在每个层级手动的把 props 传递下去。例如, 有效用户, locale preference, UI 主题在程序的很多组件中都需要接入。
+
+    ```javascript
+    const {Provider, Consumer} = React.createContext(defaultValue)
+    ```
+
+38. ### 什么是 children porp?
+
+    *Children* 是一个 prop (`this.prop.children`)，允许把组件作为数据传递给其他组件, 就像使用其他的 props 一样. 组件树将把起始标签，闭合标签中间的内容作为 `children` prop 传递给其他组件。
+    这有许多 React API 中的方法，对这个 prop 适用. 包括 `React.Children.map`, `React.Children.forEach`, `React.Children.count`, `React.Children.only`, `React.Children.toArray`.
+
+    ```jsx harmony
+    const MyDiv = React.createClass({
+      render: function() {
+        return <div>{this.props.children}</div>
+      }
+    })
+
+    ReactDOM.render(
+      <MyDiv>
+        <span>{'Hello'}</span>
+        <span>{'World'}</span>
+      </MyDiv>,
+      node
+    )
+    ```
+
+39. ### 在 react 中怎么写注释?
+
+    React/JSX 的注释于 JavaScript 多行注释很相似但要放在花括号中。
+
+    **单行注释:**
+
+    ```jsx harmony
+    <div>
+      {/* 单行注释(在通常的Javascript中, 单行注释使用两个反斜线(//)) */}
+      {`Welcome ${user}, let's play React`}
+    </div>
+    ```
+
+    **多行注释:**
+
+    ```jsx harmony
+    <div>
+      {/* 多行
+       注释 */}
+      {`Welcome ${user}, let's play React`}
+    </div>
+    ```
+
+40. ### 使用带 props 参数的 super 构造函数的目的是什么?
+
+     子类构造函数在调用 `super()` 方法之前不能使用 `this` 引用。同样适用于ES6子类.传递参数到 `super()` 执行的主要原因是在子构造函数中获得 `this.props`.
+
+    **传递Porps:**
+
+    ```javascript
+    class MyComponent extends React.Component {
+      constructor(props) {
+        super(props)
+
+        console.log(this.props) // prints { name: 'John', age: 42 }
+      }
+    }
+    ```
+
+    **没有传递Porps**
+
+    ```javascript
+    class MyComponent extends React.Component {
+      constructor(props) {
+        super()
+
+        console.log(this.props) // prints undefined
+
+        // but props parameter is still available
+        console.log(props) // prints { name: 'John', age: 42 }
+      }
+
+      render() {
+        // no difference outside constructor
+        console.log(this.props) // prints { name: 'John', age: 42 }
+      }
+    }
+    ```
+
+    上面代码显示 `this.props` 只在构造函数中是不同的.在构造函数之外是一样的。
+
