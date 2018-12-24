@@ -15,9 +15,9 @@
 |5  | [如何在React中创建组件？](#如何在React中创建组件) |
 |6  | [何时使用ClassComponent替函FunctionComponent？](#何时使用ClassComponent替函FunctionComponent) |
 |7  | [什么是PureComponents？](#什么是PureComponents) |
-|8  | [React中state 是什么？](#React中state是什么) |
-|9  | [React中porps 是什么？](#React中porps是什么) |
-|10 | [state和porps 的区别？](#state和porps的区别) |
+|8  | [React中state是什么？](#React中state是什么) |
+|9  | [React中porps是什么？](#React中porps是什么) |
+|10 | [state和porps的区别？](#state和porps的区别) |
 |11 | [为什么不应该直接更新state？](#为什么不应该直接更新state) |
 |12 | [回调函数作为setState()参数的目的是什么？](#回调函数作为setState()参数的目的是什么)
 |13 | [HTML和React事件绑定的区别是什么？](#HTML和React事件绑定的区别是什么) |
@@ -48,6 +48,11 @@
 |38 | [什么是 children porp?](#什么是childrenporp) |
 |39 | [在 react 中怎么写注释?](#在react中怎么写注释) |
 |40 | [使用带 props 参数的 super 构造函数的目的是什么?](#使用带props参数的super构造函数的目的是什么) |
+|41 | [什么是 reconciliation?](#什么是reconciliation) |
+|42 | [如何使用动态 key 值设置state?](#如何使用动态key值设置state) |
+|43 | [每次渲染时每次调用函数的常见错误是什么?](#每次渲染时每次调用函数的常见错误是什么) |
+|44 | [为什么必须大写组件名称?](#为什么必须大写组件名称) |
+|45 | [React 为什么使用 `className` 代替 `class` 属性?](#React为什么使用className代替class属性) |
 
 ## React 核心
 
@@ -61,7 +66,7 @@
 
     * 考虑到RealDOM操作很昂贵，它使用 **VirtualDOM** 而不是 RealDOM 。
     * 支持 **服务器端渲染**。
-    * 遵循 *单向** 数据流或数据绑定。
+    * 遵循 **单向** 数据流或数据绑定。
     * 使用 **可重用/可组合的** UI 组件来开发视图。
 
 3. ### 什么是JSX？
@@ -735,4 +740,52 @@
     ```
 
     上面代码显示 `this.props` 只在构造函数中是不同的.在构造函数之外是一样的。
+
+41. ### 什么是 reconciliation?
+
+    当一个组件的 props 或 state 改变,React通过比较新返回的元素和先前呈现的元素来确定是否需要实际的DOM更新。当他们不相同, react 将会更新DOM. 这一过程被叫做 *reconciliation*.
+
+42. ### 如何使用动态 key 值设置state?
+
+    如果你使用 ES6 或 Babel 转换器转换你的 JSX, 那么你可以使用 *computed property names* 完成.
+
+    ```javascript
+    handleInputChange(event) {
+      this.setState({ [event.target.id]: event.target.value })
+    }
+    ```
+
+43. ### 每次渲染时每次调用函数的常见错误是什么?
+
+    你需要清楚的是，函数作为参数传递时没有被调用。
+
+    ```jsx harmony
+    render() {
+      // 错误: handleClick 已经执行，替换了作为引用传递!
+      return <button onClick={this.handleClick()}>{'Click Me'}</button>
+    }
+    ```
+
+    相反，不带括号传递函数本身:
+
+    ```jsx harmony
+    render() {
+      // 正确: handleClick 作为引用传递!
+      return <button onClick={this.handleClick}>{'Click Me'}</button>
+    }
+    ```
+
+44. ### 为什么必须大写组件名称?
+
+    这是必须的，因为组件不是DOM元素，他们是构造函数. 同样, 在 JSX  中小写标签名代表 HTML 元素，不是组件.
+
+45. ### React 为什么使用 `className` 代替 `class` 属性?
+
+    `class` 在Javascript中是一个关键字, JSX 是 JavaScript 的扩展. 这是 React 为什么使用 `className` 代替`class` 的主要原因. 传递一个 String 类型 `className` 属性.
+
+    ```jsx harmony
+    render() {
+      return <span className={'menu navigation-menu'}>{'Menu'}</span>
+    }
+    ```
 
