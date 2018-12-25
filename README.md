@@ -53,7 +53,11 @@
 |43 | [每次渲染时每次调用函数的常见错误是什么?](#每次渲染时每次调用函数的常见错误是什么) |
 |44 | [为什么必须大写组件名称?](#为什么必须大写组件名称) |
 |45 | [React 为什么使用 `className` 代替 `class` 属性?](#React为什么使用className代替class属性) |
-
+|46 | [什么是 fragments?](#什么是fragments) |
+|47 | [为什么 fragments 比 div 容器好?](#为什么fragments比div容器好) |
+|48 | [React 中 portals 是什么?](#React中portals是什么) |
+|49 | [什么是无状态组件?](#什么是无状态组件) |
+|50 | [什么是有状态组件?](#什么是有状态组件) |
 ## React 核心
 
 1. ### 什么是React？
@@ -786,6 +790,72 @@
     ```jsx harmony
     render() {
       return <span className={'menu navigation-menu'}>{'Menu'}</span>
+    }
+    ```
+46. ### 什么是 fragments?
+
+    这是React中的通用模式，用于组件返回多个元素。*Fragments* 允许在不向DOM添加额外节点的情况下对子节点列表进行分组。
+
+    ```jsx harmony
+    render() {
+      return (
+        <React.Fragment>
+          <ChildA />
+          <ChildB />
+          <ChildC />
+        </React.Fragment>
+      )
+    }
+    ```
+
+    还有*更短的语法*，但是许多工具不支持它：
+
+    ```jsx harmony
+    render() {
+      return (
+        <>
+          <ChildA />
+          <ChildB />
+          <ChildC />
+        </>
+      )
+    }
+    ```
+
+47. ### 为什么 fragments 比 div 容器好?
+
+    1. Fragments 会更快一点，不需要创建额外的DOM节点使用更少的内存. 这只对大树和深树有真正的好处。
+    2. 一些CSS机制 *Flexbox* 和 *CSS Grid* 有特殊的父子关系, 在中间添加div使得很难保持所需的布局。
+    3. DOM检查器会更清晰。
+
+48. ### React 中 portals 是什么?
+
+    *Portal* 是将子节点呈现到存在于父组件的DOM层次结构之外的DOM节点的推荐方法。
+
+    ```javascript
+    ReactDOM.createPortal(child, container)
+    ```
+
+    第一个参数是任何可呈现的Reict子元素，例如元素、字符串或片段。第二个参数是DOM元素。
+
+49. ### 什么是无状态组件?
+
+    如果行为独立于其状态，那么它可以是一个无状态组件。 可以使用函数或类来创建无状态组件。 不在组件中使用生命周期函数, 您应该选择函数组件.如果您决定在这里使用函数组件，那么有很多好处；它们易于编写、理解和测试，稍微快一点，并且您可以完全避免使用 `this` 关键字。
+
+50. ### 什么是有状态组件?
+
+    如果组件的行为取决于组件的 `state`，那么可以将其称为有状态组件, 这些 *有状态组件* 总是 *class 组件* 并在 `constructor` 中获取初始化 state. 
+
+    ```javascript
+    class App extends Component {
+      constructor(props) {
+        super(props)
+        this.state = { count: 0 }
+      }
+
+      render() {
+        // ...
+      }
     }
     ```
 
