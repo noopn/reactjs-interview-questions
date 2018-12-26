@@ -58,6 +58,11 @@
 |48 | [React 中 portals 是什么?](#React中portals是什么) |
 |49 | [什么是无状态组件?](#什么是无状态组件) |
 |50 | [什么是有状态组件?](#什么是有状态组件) |
+|51 | [React 中如何对 props 进行验证?](#React中如何对props进行验证) |
+|52 | [React的优点是什么?](#React的优点是什么) |
+|53 | [React 的局限是什么?](#React的局限是什么) |
+|54 | [React V16 中错误边界是什么](#ReactV16中错误边界是什么) |
+|55 | [React v15中如何处理错误边界?](#Reactv15中如何处理错误边界) |
 ## React 核心
 
 1. ### 什么是React？
@@ -858,4 +863,102 @@
       }
     }
     ```
+51. ### React 中如何对 props 进行验证?
 
+    当程序运行在 *开发模式*, React 将会自动检查所有设置在组件上的 props 确保它们有 *正确类型*. 如果类型错误, React将在控制台中生成警告消息。 由于性能影响，它在*生产模式*中禁用。. The mandatory props are defined with `isRequired`.
+
+    一组预定义的prop类型:
+
+    1. `PropTypes.number`
+    2. `PropTypes.string`
+    3. `PropTypes.array`
+    4. `PropTypes.object`
+    5. `PropTypes.func`
+    6. `PropTypes.node`
+    7. `PropTypes.element`
+    8. `PropTypes.bool`
+    9. `PropTypes.symbol`
+    10. `PropTypes.any`
+
+    我们可以为 `User` 组件定义 `propTypes`:
+
+    ```jsx harmony
+    import React from 'react'
+    import PropTypes from 'prop-types'
+
+    class User extends React.Component {
+      static propTypes = {
+        name: PropTypes.string.isRequired,
+        age: PropTypes.number.isRequired
+      }
+
+      render() {
+        return (
+          <>
+            <h1>{`Welcome, ${this.props.name}`}</h1>
+            <h2>{`Age, ${this.props.age}`}</h2>
+          </>
+        )
+      }
+    }
+    ```
+
+    **Note:** 在 React v15.5 *PropTypes* 被从 `React.PropTypes` 移动到 `prop-types` 库.
+
+52. ### React的优点是什么?
+
+    1. 使用 *Virtual DOM* 提高应用程序的性能。
+    2. JSX 使代码易读易写.
+    3. 同时支持客户端服务端渲染 (*SSR*).
+    4. 易于与框架（Angular, Backbone）集成，因为它只是一个视图库。
+    5. 易于使用诸如Jest之类的工具编写单元和集成测试。
+
+53. ### React 的局限是什么?
+
+    1. React 只是一个视图库，并不是完整的框架.
+    2. 对于刚接触网络开发的初学者来说，有一个学习曲线。
+    3. 将React集成到传统的MVC框架中需要一些额外的配置。
+    4. 代码复杂性随着内联模板和JSX的增加而增加。
+    5. 太多的小组件导致过度工作量或模版。
+
+54. ### React V16 中错误边界是什么?
+
+    *错误边界*是在其子组件树中的任何位置捕获JavaScript错误的组件，打印这些错误, 并显示一个回退UI，防止组件树崩溃。
+
+    一个类组件如果定义一个 `componentDidCatch(error, info)` 新的生命周期方法就回变成错误边界。
+
+    ```jsx harmony
+    class ErrorBoundary extends React.Component {
+      constructor(props) {
+        super(props)
+        this.state = { hasError: false }
+      }
+
+      componentDidCatch(error, info) {
+        // 显示回退 UI
+        this.setState({ hasError: true })
+        // 你也可以向错误收集服务器发送错误
+        logErrorToMyService(error, info)
+      }
+
+      render() {
+        if (this.state.hasError) {
+          // 你可以渲染任何自定义的回退UI
+          return <h1>{'Something went wrong.'}</h1>
+        }
+        return this.props.children
+      }
+    }
+    ```
+
+    之后像常规组件一样使用:
+
+    ```jsx harmony
+    <ErrorBoundary>
+      <MyWidget />
+    </ErrorBoundary>
+    ```
+
+55. ### React v15中如何处理错误边界?
+
+    React v15 为错误边界提供了非常基本的支持使用 `unstable_handleError` 方法. 
