@@ -63,6 +63,11 @@
 |53 | [React 的局限是什么?](#React的局限是什么) |
 |54 | [React V16 中错误边界是什么](#ReactV16中错误边界是什么) |
 |55 | [React v15中如何处理错误边界?](#Reactv15中如何处理错误边界) |
+|56 | [什么是 static 类型检查的推荐方法?](#什么是static类型检查的推荐方法) |
+|57 | [react-dom 包的用途是什么?](#react-dom包的用途是什么) |
+|58 | [react-dom render 方法的目的是什么?](#react-dom-render方法的目的是什么) |
+|59 | [什么是 ReactDOMServer?](#什么是ReactDOMServer) |
+|60 | [如何在 React 中使用 innerHTML?](#如何在React中使用innerHTML) |
 ## React 核心
 
 1. ### 什么是React？
@@ -962,3 +967,66 @@
 55. ### React v15中如何处理错误边界?
 
     React v15 为错误边界提供了非常基本的支持使用 `unstable_handleError` 方法. 
+
+56. ### 什么是 static 类型检查的推荐方法?
+
+    在 React 程序中，通常我们使用 *PropTypes库* (`React.PropTypes` 在 React v15.5 移动到 `prop-types` 包中) 用作 *类型检查*。 以大量代码作为基础, 推荐使用 *static 类型检查* 就像 Flow 或 TypeScript, 在编译时执行类型检查并提供自动完成功能的。
+
+57. ### react-dom 包的用途是什么?
+
+    `react-dom` 包提供了*DOM特定的方法*可以在应用程序的顶层使用. 大多数组件不需要使用此模块。这个包的一些方法是:
+
+    1. `render()`
+    2. `hydrate()`
+    3. `unmountComponentAtNode()`
+    4. `findDOMNode()`
+    5. `createPortal()`
+
+58. ### `react-dom` render 方法的目的是什么?
+
+    此方法用于在所提供的容器中将React元素呈现到DOM中，并返回对组件的引用。如果React元素先前被呈现到容器中, 它将对它执行更新，并且仅根据需要修改DOM以反映最新的更改。
+
+    ```
+    ReactDOM.render(element, container[, callback])
+    ```
+
+   如果提供了可选的回调，则在呈现或更新组件之后将执行该回调。
+
+59. ### 什么是ReactDOMServer?
+
+    `ReactDOMServer` 对象使您能够渲染组件为静态标记（通常在节点服务器上使用）. 这个对象主要用于*服务器端呈现*(SSR)。以下方法可以在服务器和浏览器环境中使用
+
+    1. `renderToString()`
+    2. `renderToStaticMarkup()`
+
+    例如，通常运行基于节点的Web服务器，如Express、Hapi或Koa，然后调用 `renderToString` 将根组件呈现给字符串，然后作为响应发送该字符串。
+
+    ```javascript
+    // using Express
+    import { renderToString } from 'react-dom/server'
+    import MyPage from './MyPage'
+
+    app.get('/', (req, res) => {
+      res.write('<!DOCTYPE html><html><head><title>My Page</title></head><body>')
+      res.write('<div id="content">')
+      res.write(renderToString(<MyPage/>))
+      res.write('</div></body></html>')
+      res.end()
+    })
+    ```
+
+60. ### 如何在 React 中使用 innerHTML?
+
+    `dangerouslySetInnerHTML` 是浏览器中 React 代替 `innerHTML` 的属性. 就像 `innerHTML` 一样, 考虑到跨站点脚本（XSS）攻击，使用这个属性是危险的。 你只需要传递一个对象key为 `__html` 值为文本 .
+
+    在这个例子中，MyComponent使用 `dangerouslySetInnerHTML` 属性来设置HTML标记:
+
+    ```jsx harmony
+    function createMarkup() {
+      return { __html: 'First &middot; Second' }
+    }
+
+    function MyComponent() {
+      return <div dangerouslySetInnerHTML={createMarkup()} />
+    }
+    ```
