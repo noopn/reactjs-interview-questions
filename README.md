@@ -33,41 +33,47 @@
 |23 | [为什么曾经refs是String类型？](#为什么曾经refs是String类型) |
 |24 | [什么是虚拟DOM？](#什么是虚拟DOM) |
 |25 | [虚拟DOM是如何工作的？](#虚拟DOM是如何工作的) |
-|26 | [Shadow DOM 和 Virtual DOM 的区别?](#Shadow-DOM和Virtual-DOM的区别) |
-|27 | [React Fiber 是什么?](#React-Fiber是什么) |
-|28 | [React Fiber 出现的主要目的是什么?](#ReactFiber出现的主要目的是什么) |
-|29 | [什么是受控组件?](#什么是受控组件) |
-|30 | [什么是非受控组件?](#什么是非受控组件) |
+|26 | [Shadow DOM 和 Virtual DOM 的区别？](#Shadow-DOM和Virtual-DOM的区别) |
+|27 | [React Fiber 是什么？](#React-Fiber是什么) |
+|28 | [React Fiber 出现的主要目的是什么？](#ReactFiber出现的主要目的是什么) |
+|29 | [什么是受控组件？](#什么是受控组件) |
+|30 | [什么是非受控组件？](#什么是非受控组件) |
 |31 | [createElement 和 cloneElement 的区别](#createElement和cloneElement的区别) |
-|32 | [React 中 State 提升是什么?](#React中State提升是什么) |
-|33 | [组件生命周期的不同阶段是什么?](#组件生命周期的不同阶段是什么) |
-|34 | [React 生命周期方法是什么?](#React生命周期方法是什么) |
-|35 | [什么是高阶组件?](#什么是高阶组件) |
-|36 | [如何创建高阶组件的 props 代理?](#如何创建高阶组件的props代理) |
-|37 | [什么是 context?](#什么是context) |
-|38 | [什么是 children porp?](#什么是childrenporp) |
-|39 | [在 react 中怎么写注释?](#在react中怎么写注释) |
-|40 | [使用带 props 参数的 super 构造函数的目的是什么?](#使用带props参数的super构造函数的目的是什么) |
-|41 | [什么是 reconciliation?](#什么是reconciliation) |
-|42 | [如何使用动态 key 值设置state?](#如何使用动态key值设置state) |
-|43 | [每次渲染时每次调用函数的常见错误是什么?](#每次渲染时每次调用函数的常见错误是什么) |
-|44 | [为什么必须大写组件名称?](#为什么必须大写组件名称) |
-|45 | [React 为什么使用 `className` 代替 `class` 属性?](#React为什么使用className代替class属性) |
-|46 | [什么是 fragments?](#什么是fragments) |
-|47 | [为什么 fragments 比 div 容器好?](#为什么fragments比div容器好) |
-|48 | [React 中 portals 是什么?](#React中portals是什么) |
-|49 | [什么是无状态组件?](#什么是无状态组件) |
-|50 | [什么是有状态组件?](#什么是有状态组件) |
-|51 | [React 中如何对 props 进行验证?](#React中如何对props进行验证) |
-|52 | [React的优点是什么?](#React的优点是什么) |
-|53 | [React 的局限是什么?](#React的局限是什么) |
+|32 | [React 中 State 提升是什么？](#React中State提升是什么) |
+|33 | [组件生命周期的不同阶段是什么？](#组件生命周期的不同阶段是什么) |
+|34 | [React 生命周期方法是什么？](#React生命周期方法是什么) |
+|35 | [什么是高阶组件？](#什么是高阶组件) |
+|36 | [如何创建高阶组件的 props 代理？](#如何创建高阶组件的props代理) |
+|37 | [什么是 context？](#什么是context) |
+|38 | [什么是 children porp？](#什么是childrenporp) |
+|39 | [在 react 中怎么写注释？](#在react中怎么写注释) |
+|40 | [使用带 props 参数的 super 构造函数的目的是什么？](#使用带props参数的super构造函数的目的是什么) |
+|41 | [什么是 reconciliation？](#什么是reconciliation) |
+|42 | [如何使用动态 key 值设置state？](#如何使用动态key值设置state) |
+|43 | [每次渲染时每次调用函数的常见错误是什么？](#每次渲染时每次调用函数的常见错误是什么) |
+|44 | [为什么必须大写组件名称？](#为什么必须大写组件名称) |
+|45 | [React 为什么使用 `className` 代替 `class` 属性？](#React为什么使用className代替class属性) |
+|46 | [什么是 fragments？](#什么是fragments) |
+|47 | [为什么 fragments 比 div 容器好？](#为什么fragments比div容器好) |
+|48 | [React 中 portals 是什么？](#React中portals是什么) |
+|49 | [什么是无状态组件？](#什么是无状态组件) |
+|50 | [什么是有状态组件？](#什么是有状态组件) |
+|51 | [React 中如何对 props 进行验证？](#React中如何对props进行验证) |
+|52 | [React的优点是什么？](#React的优点是什么) |
+|53 | [React 的局限是什么？](#React的局限是什么) |
 |54 | [React V16 中错误边界是什么](#ReactV16中错误边界是什么) |
-|55 | [React v15中如何处理错误边界?](#Reactv15中如何处理错误边界) |
-|56 | [什么是 static 类型检查的推荐方法?](#什么是static类型检查的推荐方法) |
-|57 | [react-dom 包的用途是什么?](#react-dom包的用途是什么) |
-|58 | [react-dom render 方法的目的是什么?](#react-dom-render方法的目的是什么) |
-|59 | [什么是 ReactDOMServer?](#什么是ReactDOMServer) |
-|60 | [如何在 React 中使用 innerHTML?](#如何在React中使用innerHTML) |
+|55 | [React v15中如何处理错误边界？](#Reactv15中如何处理错误边界) |
+|56 | [什么是 static 类型检查的推荐方法？](#什么是static类型检查的推荐方法) |
+|57 | [react-dom 包的用途是什么？](#react-dom包的用途是什么) |
+|58 | [react-dom render 方法的目的是什么？](#react-dom-render方法的目的是什么) |
+|59 | [什么是 ReactDOMServer？](#什么是ReactDOMServer) |
+|60 | [如何在 React 中使用 innerHTML？](#如何在React中使用innerHTML) |
+|61 | [如何在 React 中使用 style？](#如何在React中使用style) |
+|62 | [React 中事件有什么不同？](#React中事件有什么不同) |
+|63 | [在 constructor 中使用 setState() 会发生什么？](#在constructor中使用setState()会发生什么) |
+|64 | [数组索引作为keys的影响是什么？](#数组索引作为keys的影响是什么) |
+|65 | [在 componentWillMount() 方法中使用 setState() 好么？](#在componentWillMount()方法中使用setState()好么) |
+
 ## React 核心
 
 1. ### 什么是React？
@@ -534,19 +540,19 @@
     3. 一旦计算完成，真实 DOM 只会更新确实被改变的部分。
         ![vdom3](image/vdom3.png)
 
-26. ### Shadow DOM 和 Virtual DOM 的区别?
+26. ### Shadow DOM 和 Virtual DOM 的区别？
 
     *Shadow DOM* 浏览器技术为在 *web components* 中变量和css作用域主要设计的。 *Virtual DOM* 是JavaScript库在浏览器API 上贯彻的理念。
 
-27. ### 什么事React Fiber?
+27. ### 什么事React Fiber？
 
     Fiber 是React 16 中新的协调引擎或核心算法的重新实现。React Fiber的目标是提高其在诸如动画、布局、手势、暂停和中止的能力等领域的性能，重用工作并为不同类型的更新分配优先级; and new concurrency primitives.
 
-28. ### ReactFiber出现的主要目的是什么?
+28. ### ReactFiber出现的主要目的是什么？
 
     React Fiber 的目标是提高其在动画，布局，手势，等领域的性能. 首要的特点是 **增量渲染**: 可以把渲染工作切割成多k块，在多个画面中进行渲染.
 
-29. ### 什么是受控组件?
+29. ### 什么是受控组件？
 
     在用户输入后控制（劫持）了表单中的输入元素的组件叫做 **受控组件**, 即, 每一个 state 的改变都会有相关的处理函数
 
@@ -558,7 +564,7 @@
     }
     ```
 
-30. ### 什么是非受控组件?
+30. ### 什么是非受控组件？
 
     **非受控组件** 是那些在自己内部存储状态的组件, 当你需要时，通过使用 ref 访问元素找到当前的值。这有点像传统的HTML。
 
@@ -592,15 +598,15 @@
     ```
 
     一般情况下, 推荐使用受控组件实现表单.
-31. ### createElement 和 cloneElement 的区别?
+31. ### createElement 和 cloneElement 的区别？
 
     JSX 元素将会被编译成 `React.createElement()` 函数用来创建 react 元素，他们将用于UI的对象表示. 然而， `cloneElement` 用来克隆一个元素并传入新的props.
 
-32. ### React 中 State 提升是什么?
+32. ### React 中 State 提升是什么？
 
     当几个组件需要共享相同的可变数据时，建议 *提升共享状态* 到它们最近的公共祖先元素. 意味着如果两个子组件共享相同的数据时来自他们的父元素。 把状态移动到父元素代替在每个子元素中都有自己的状态。
 
-33. ### 组件生命周期的不同阶段是什么?
+33. ### 组件生命周期的不同阶段是什么？
 
     组件生命周期有四个不同阶段.
 
@@ -615,7 +621,7 @@
 
     <!-- TODO: new lifecycle methods in React v16 -->
 
-34. ### React 生命周期方法是什么?
+34. ### React 生命周期方法是什么？
 
     - **componentWillMount:** 在渲染前执行，在根组件中用作App级别的配置。
     - **componentDidMount:** 在第一次渲染后执行，这里应该发生，所有的请求，元素、state 更新,事件监听。
@@ -627,7 +633,7 @@
 
     <!-- TODO: new lifecycle methods in React v16 -->
 
-35. ### 什么是高阶组件?
+35. ### 什么是高阶组件？
 
     *高阶组件* (*HOC*) 是一个接受组件并返回新组件的函数. 基本上,它是从React 组合特定中派生的一种模式。
 
@@ -665,7 +671,7 @@
     }
     ```
 
-37. ### 什么是 context?
+37. ### 什么是 context？
 
     *Context* 规定一种方法，穿过组件数传递数据，不需要在每个层级手动的把 props 传递下去。例如, 有效用户, locale preference, UI 主题在程序的很多组件中都需要接入。
 
@@ -673,7 +679,7 @@
     const {Provider, Consumer} = React.createContext(defaultValue)
     ```
 
-38. ### 什么是 children porp?
+38. ### 什么是 children porp？
 
     *Children* 是一个 prop (`this.prop.children`)，允许把组件作为数据传递给其他组件, 就像使用其他的 props 一样. 组件树将把起始标签，闭合标签中间的内容作为 `children` prop 传递给其他组件。
     这有许多 React API 中的方法，对这个 prop 适用. 包括 `React.Children.map`, `React.Children.forEach`, `React.Children.count`, `React.Children.only`, `React.Children.toArray`.
@@ -694,7 +700,7 @@
     )
     ```
 
-39. ### 在 react 中怎么写注释?
+39. ### 在 react 中怎么写注释？
 
     React/JSX 的注释于 JavaScript 多行注释很相似但要放在花括号中。
 
@@ -717,7 +723,7 @@
     </div>
     ```
 
-40. ### 使用带 props 参数的 super 构造函数的目的是什么?
+40. ### 使用带 props 参数的 super 构造函数的目的是什么？
 
      子类构造函数在调用 `super()` 方法之前不能使用 `this` 引用。同样适用于ES6子类.传递参数到 `super()` 执行的主要原因是在子构造函数中获得 `this.props`.
 
@@ -755,11 +761,11 @@
 
     上面代码显示 `this.props` 只在构造函数中是不同的.在构造函数之外是一样的。
 
-41. ### 什么是 reconciliation?
+41. ### 什么是 reconciliation？
 
     当一个组件的 props 或 state 改变,React通过比较新返回的元素和先前呈现的元素来确定是否需要实际的DOM更新。当他们不相同, react 将会更新DOM. 这一过程被叫做 *reconciliation*.
 
-42. ### 如何使用动态 key 值设置state?
+42. ### 如何使用动态 key 值设置state？
 
     如果你使用 ES6 或 Babel 转换器转换你的 JSX, 那么你可以使用 *computed property names* 完成.
 
@@ -769,7 +775,7 @@
     }
     ```
 
-43. ### 每次渲染时每次调用函数的常见错误是什么?
+43. ### 每次渲染时每次调用函数的常见错误是什么？
 
     你需要清楚的是，函数作为参数传递时没有被调用。
 
@@ -789,11 +795,11 @@
     }
     ```
 
-44. ### 为什么必须大写组件名称?
+44. ### 为什么必须大写组件名称？
 
     这是必须的，因为组件不是DOM元素，他们是构造函数. 同样, 在 JSX  中小写标签名代表 HTML 元素，不是组件.
 
-45. ### React 为什么使用 `className` 代替 `class` 属性?
+45. ### React 为什么使用 `className` 代替 `class` 属性？
 
     `class` 在Javascript中是一个关键字, JSX 是 JavaScript 的扩展. 这是 React 为什么使用 `className` 代替`class` 的主要原因. 传递一个 String 类型 `className` 属性.
 
@@ -802,7 +808,7 @@
       return <span className={'menu navigation-menu'}>{'Menu'}</span>
     }
     ```
-46. ### 什么是 fragments?
+46. ### 什么是 fragments？
 
     这是React中的通用模式，用于组件返回多个元素。*Fragments* 允许在不向DOM添加额外节点的情况下对子节点列表进行分组。
 
@@ -832,13 +838,13 @@
     }
     ```
 
-47. ### 为什么 fragments 比 div 容器好?
+47. ### 为什么 fragments 比 div 容器好？
 
     1. Fragments 会更快一点，不需要创建额外的DOM节点使用更少的内存. 这只对大树和深树有真正的好处。
     2. 一些CSS机制 *Flexbox* 和 *CSS Grid* 有特殊的父子关系, 在中间添加div使得很难保持所需的布局。
     3. DOM检查器会更清晰。
 
-48. ### React 中 portals 是什么?
+48. ### React 中 portals 是什么？
 
     *Portal* 是将子节点呈现到存在于父组件的DOM层次结构之外的DOM节点的推荐方法。
 
@@ -848,11 +854,11 @@
 
     第一个参数是任何可呈现的Reict子元素，例如元素、字符串或片段。第二个参数是DOM元素。
 
-49. ### 什么是无状态组件?
+49. ### 什么是无状态组件？
 
     如果行为独立于其状态，那么它可以是一个无状态组件。 可以使用函数或类来创建无状态组件。 不在组件中使用生命周期函数, 您应该选择函数组件.如果您决定在这里使用函数组件，那么有很多好处；它们易于编写、理解和测试，稍微快一点，并且您可以完全避免使用 `this` 关键字。
 
-50. ### 什么是有状态组件?
+50. ### 什么是有状态组件？
 
     如果组件的行为取决于组件的 `state`，那么可以将其称为有状态组件, 这些 *有状态组件* 总是 *class 组件* 并在 `constructor` 中获取初始化 state. 
 
@@ -868,7 +874,7 @@
       }
     }
     ```
-51. ### React 中如何对 props 进行验证?
+51. ### React 中如何对 props 进行验证？
 
     当程序运行在 *开发模式*, React 将会自动检查所有设置在组件上的 props 确保它们有 *正确类型*. 如果类型错误, React将在控制台中生成警告消息。 由于性能影响，它在*生产模式*中禁用。. The mandatory props are defined with `isRequired`.
 
@@ -910,7 +916,7 @@
 
     **Note:** 在 React v15.5 *PropTypes* 被从 `React.PropTypes` 移动到 `prop-types` 库.
 
-52. ### React的优点是什么?
+52. ### React的优点是什么？
 
     1. 使用 *Virtual DOM* 提高应用程序的性能。
     2. JSX 使代码易读易写.
@@ -918,7 +924,7 @@
     4. 易于与框架（Angular, Backbone）集成，因为它只是一个视图库。
     5. 易于使用诸如Jest之类的工具编写单元和集成测试。
 
-53. ### React 的局限是什么?
+53. ### React 的局限是什么？
 
     1. React 只是一个视图库，并不是完整的框架.
     2. 对于刚接触网络开发的初学者来说，有一个学习曲线。
@@ -926,7 +932,7 @@
     4. 代码复杂性随着内联模板和JSX的增加而增加。
     5. 太多的小组件导致过度工作量或模版。
 
-54. ### React V16 中错误边界是什么?
+54. ### React V16 中错误边界是什么？
 
     *错误边界*是在其子组件树中的任何位置捕获JavaScript错误的组件，打印这些错误, 并显示一个回退UI，防止组件树崩溃。
 
@@ -964,15 +970,15 @@
     </ErrorBoundary>
     ```
 
-55. ### React v15中如何处理错误边界?
+55. ### React v15中如何处理错误边界？
 
     React v15 为错误边界提供了非常基本的支持使用 `unstable_handleError` 方法. 
 
-56. ### 什么是 static 类型检查的推荐方法?
+56. ### 什么是 static 类型检查的推荐方法？
 
     在 React 程序中，通常我们使用 *PropTypes库* (`React.PropTypes` 在 React v15.5 移动到 `prop-types` 包中) 用作 *类型检查*。 以大量代码作为基础, 推荐使用 *static 类型检查* 就像 Flow 或 TypeScript, 在编译时执行类型检查并提供自动完成功能的。
 
-57. ### react-dom 包的用途是什么?
+57. ### react-dom 包的用途是什么？
 
     `react-dom` 包提供了*DOM特定的方法*可以在应用程序的顶层使用. 大多数组件不需要使用此模块。这个包的一些方法是:
 
@@ -982,7 +988,7 @@
     4. `findDOMNode()`
     5. `createPortal()`
 
-58. ### `react-dom` render 方法的目的是什么?
+58. ### `react-dom` render 方法的目的是什么？
 
     此方法用于在所提供的容器中将React元素呈现到DOM中，并返回对组件的引用。如果React元素先前被呈现到容器中, 它将对它执行更新，并且仅根据需要修改DOM以反映最新的更改。
 
@@ -992,7 +998,7 @@
 
    如果提供了可选的回调，则在呈现或更新组件之后将执行该回调。
 
-59. ### 什么是ReactDOMServer?
+59. ### 什么是ReactDOMServer？
 
     `ReactDOMServer` 对象使您能够渲染组件为静态标记（通常在节点服务器上使用）. 这个对象主要用于*服务器端呈现*(SSR)。以下方法可以在服务器和浏览器环境中使用
 
@@ -1015,7 +1021,7 @@
     })
     ```
 
-60. ### 如何在 React 中使用 innerHTML?
+60. ### 如何在 React 中使用 innerHTML？
 
     `dangerouslySetInnerHTML` 是浏览器中 React 代替 `innerHTML` 的属性. 就像 `innerHTML` 一样, 考虑到跨站点脚本（XSS）攻击，使用这个属性是危险的。 你只需要传递一个对象key为 `__html` 值为文本 .
 
@@ -1028,5 +1034,71 @@
 
     function MyComponent() {
       return <div dangerouslySetInnerHTML={createMarkup()} />
+    }
+    ```
+61. ### 如何在React中使用style？
+
+    `style` 属性接受驼峰命名的javascript对象而不是 CSS 字符串。 这与DOM样式的JavaScript属性是一致的，更加有效，并且防止了XSS安全漏洞。.
+
+    ```jsx harmony
+    const divStyle = {
+      color: 'blue',
+      backgroundImage: 'url(' + imgUrl + ')'
+    };
+
+    function HelloWorldComponent() {
+      return <div style={divStyle}>Hello World!</div>
+    }
+    ```
+
+   Style 键是驼峰命名，以便与JavaScript中访问DOM节点上的属性一致 (例如. `node.style.backgroundImage`).
+
+62. ### React 中事件有什么不同？
+
+    绑定事件在 React 中有一些语法上的不同:
+
+    1. React 事件处理是驼峰命名而不是小写命名。
+    2. JSX 中传递一个函数作为事件处理函数,而不是一个字符串.
+
+63. ### 在 constructor 中使用 `setState()` 会发生什么？
+
+    当使用 `setState()`, 除了给对象状态赋值之外，React还重新呈渲染件及其所有子组件。 你会得到像这样的错误: *Can only update a mounted or mounting component.* 所以需要使用 `this.state` 在 constructor 初始化 state 变量.
+
+64. ### 数组索引作为keys的影响是什么？
+
+    键应该是稳定的、可预测的、唯一的，以便React可以跟踪元素。
+
+    在下面的代码片段中，每个元素的键将基于排序, 而不是和正在使用的数据绑定.这限制了React可以做的优化。
+
+    ```jsx harmony
+    {todos.map((todo, index) =>
+      <Todo
+        {...todo}
+        key={index}
+      />
+    )}
+    ```
+
+    如果将元素数据用于唯一键，假设todo.id对这个列表是惟一的并且是稳定的，React将能够重新排序元素，而无需对它们重新赋值。
+
+    ```jsx harmony
+    {todos.map((todo) =>
+      <Todo {...todo}
+        key={todo.id} />
+    )}
+    ```
+
+65. ### 在 `componentWillMount()` 方法中使用 `setState()` 好么？
+
+    建议避免 `componentWillMount()` 生命周期方法中的异步初始化。`componentWillMount()` 在渲染前发生. 在 `render()` 前被调用, 因此，在该方法中设置状态将不会触发重新渲染. 避免在此方法中引入任何side-effects or subscriptions。确保对组件的异步赋值发生在 `componentDidMount()` 而不是 `componentWillMount()`.
+
+    ```jsx harmony
+    componentDidMount() {
+      axios.get(`api/todos`)
+        .then((result) => {
+          this.setState({
+            messages: [...result.data]
+          })
+        })
     }
     ```
