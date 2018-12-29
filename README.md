@@ -73,6 +73,11 @@
 |63 | [在 constructor 中使用 setState() 会发生什么？](#在constructor中使用setState()会发生什么) |
 |64 | [数组索引作为keys的影响是什么？](#数组索引作为keys的影响是什么) |
 |65 | [在 componentWillMount() 方法中使用 setState() 好么？](#在componentWillMount()方法中使用setState()好么) |
+|66 | [如果在初始化 state 时使用 porps 会发生什么?](#如果在初始化state时使用porps会发生什么) |
+|67 | [如何根据条件渲染组件?](#如何根据条件渲染组件)
+|68 | [为什么在dom元素上展开props时要注意?](#为什么在dom元素上展开props时要注意) |
+|69 | [React 怎么使用修饰器?](#React怎么使用修饰器) |
+|70 | [你如何记忆一个组件?](#你如何记忆一个组件) |
 
 ## React 核心
 
@@ -1100,5 +1105,133 @@
             messages: [...result.data]
           })
         })
+    }
+    ```
+66. ### 如果在初始化state时使用porps会发生什么?
+
+    如果在不刷新组件的情况下更改组件上的属性，新的prop值将永远不会显示，因为构造函数函数永远不会更新组件的当前状态。 只有当组件首次创建时，才会从props中执行状态初始化。
+
+    下面的组件不会显示更新的输入值： 
+
+    ```jsx harmony
+    class MyComponent extends React.Component {
+      constructor(props) {
+        super(props)
+
+        this.state = {
+          records: [],
+          inputValue: this.props.inputValue
+        };
+      }
+      //译者：如果想使用props的值渲染组件，那么在render中直接从props中获取，而不是在constructor中保存在state中。
+      render() {
+        return <div>{this.state.inputValue}</div>
+      }
+    }
+    ```
+
+    在render方法中使用props将更新值：
+
+    ```jsx harmony
+    class MyComponent extends React.Component {
+      constructor(props) {
+        super(props)
+
+        this.state = {
+          record: []
+        }
+      }
+
+      render() {
+        return <div>{this.props.inputValue}</div>
+      }
+    }
+    ```
+
+67. ### 如何根据条件渲染组件?
+
+    您希望根据某种状态渲染不同的组件. JSX 不会渲染 `false` 或 `undefined`, 所以你可以使用条件 *短路*，仅当某个条件为真时才渲染组件的给定部分。
+
+    ```jsx harmony
+    const MyComponent = ({ name, address }) => (
+      <div>
+        <h2>{name}</h2>
+        {address &&
+          <p>{address}</p>
+        }
+      </div>
+    )
+    ```
+
+    如果你需要 `if-else` 条件，那么使用 *三元运算*.
+
+    ```jsx harmony
+    const MyComponent = ({ name, address }) => (
+      <div>
+        <h2>{name}</h2>
+        {address
+          ? <p>{address}</p>
+          : <p>{'Address is not available'}</p>
+        }
+      </div>
+    )
+    ```
+
+68. ### 为什么在dom元素上展开props时要注意?
+
+    当 *展开props* 我们遇到添加未知HTML属性的风险, 这是个坏习惯. 相反，我们可以使用 `...rest` 操作符，因此它只添加所需的 props。例如
+
+    ```jsx harmony
+    const ComponentA = () =>
+      <ComponentB isDisplay={true} className={'componentStyle'} />
+
+    const ComponentB = ({ isDisplay, ...domProps }) =>
+      <div {...domProps}>{'ComponentB'}</div>
+    ```
+
+69. ### React 怎么使用修饰器?
+
+    你可以 *修饰* 你的 *类* 组件, 就像给一个函数传递组件一样. **Decorators** 是灵活易读的修改组件功能的方法。
+
+    ```jsx harmony
+    @setTitle('Profile')
+    class Profile extends React.Component {
+        //....
+    }
+
+    /*
+      title 是一个字符串将会被设置为 document title
+      WrappedComponent 是上面个例子中，修饰器放在上面的类组件
+    */
+    const setTitle = (title) => (WrappedComponent) => {
+      return class extends React.Component {
+        componentDidMount() {
+          document.title = title
+        }
+
+        render() {
+          return <WrappedComponent {...this.props} />
+        }
+      }
+    }
+    ```
+
+    **Note:** 装饰器是没有进入ES7的一个特性，但是目前是一个*阶段2建议*。
+
+70. ### 你如何记忆一个组件?
+
+    有可用的memoize库，可用于函数组件。例如，`moize` 库可以将另一个组件中的组件记忆起来。
+
+    ```jsx harmony
+    import moize from 'moize'
+    import Component from './components/Component' // this module exports a non-memoized component
+
+    const MemoizedFoo = moize.react(Component)
+
+    const Consumer = () => {
+      <div>
+        {'I will memoize the following entry:'}
+        <MemoizedFoo/>
+      </div>
     }
     ```
