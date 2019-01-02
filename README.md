@@ -78,7 +78,16 @@
 |68 | [为什么在dom元素上展开props时要注意?](#为什么在dom元素上展开props时要注意) |
 |69 | [React 怎么使用修饰器?](#React怎么使用修饰器) |
 |70 | [你如何记忆一个组件?](#你如何记忆一个组件) |
-
+|71 | [如何实现服务器端呈现或SSR?](#如何实现服务器端呈现或SSR) |
+|72 | [React 怎么开启 production 模式?](#React怎么开启production模式) |
+|73 | [什么是CRA及其好处?](#什么是CRA及其好处) |
+|74 | [挂载阶段生命周期方法的顺序是什么?](#挂载阶段生命周期方法的顺序是什么) |
+|75 | [React v16 什么生命周期方法不赞同使用?](#React-v16什么生命周期方法不赞同使用) |
+|76 | [getDerivedStateFromProps() 生命周期的目的是什么?](#getDerivedStateFromProps()生命周期的目的是什么) |
+|77 | [getSnapshotBeforeUpdate() 生命周期方法的目的是什么?](#getSnapshotBeforeUpdate()生命周期方法的目的是什么) |
+|78 | [createElement() 和 cloneElement() 不同?](#createElement()和cloneElement()不同) |
+|79 | [推荐的命名组件的方法是什么?](#推荐的命名组件的方法是什么) |
+|80 | [组件类中方法的推荐顺序是什么？](#组件类中方法的推荐顺序是什么) |
 ## React 核心
 
 1. ### 什么是React？
@@ -1235,3 +1244,137 @@
       </div>
     }
     ```
+71. ### 如何实现服务器端呈现或SSR?
+
+    React 以及具备在服务器端的渲染。有一个特殊版本的DOM渲染器可用, 它遵循与客户端相同的模式。
+
+    ```jsx harmony
+    import ReactDOMServer from 'react-dom/server'
+    import App from './App'
+
+    ReactDOMServer.renderToString(<App />)
+    ```
+
+    此方法将以字符串形式输出常规HTML, 然后将其作为服务器响应的一部分放在页面正文中。在客户端, React 检测预渲染的内容， 然后 seamlessly（无缝的） picks up（获取） where it left off（停止）.
+
+72. ### React 怎么开启 production 模式?
+
+    你应该使用 Webpack 的 `DefinePlugin` 方法设置 `NODE_ENV` 成 `production`,它删除了PropType验证和额外警告等内容。 除此之外, 如果你压缩代码, 例如, Uglify 的 dead-code 删除仅用于开发的代码和注释, 它会大大减小你的包裹的尺寸。
+
+73. ### 什么是CRA及其好处?
+
+    `create-react-app` CLI 工具允许你快速穿件并运行React 程序而不需要配置的过程.
+
+    让我们使用 *CRA* 创建 TODO app:
+
+    ```console
+    # Installation
+    $ npm install -g create-react-app
+
+    # Create new project
+    $ create-react-app todo-app
+    $ cd todo-app
+
+    # Build, test and run
+    $ npm run build
+    $ npm run test
+    $ npm start
+    ```
+    它包含了我们建立一个React app 需要的所有事情:
+
+    1. React, JSX, ES6, 和异步流的支持.
+    2. ES6之外的语言附加项，如对象扩展运算符.
+    3. 自动添加 CSS 前缀,所以不需要 -webkit- 或其他的前缀.
+    4. 一个快速交互的单元测试运行程序，内置了对覆盖率报告的支持.
+    5. 对常见错误发出警告的实时开发服务器.
+    6. 一个构建脚本，用于打包JS、CSS和用于生产的图像，以及hashes 和sourcemaps.
+
+74. ###  挂载阶段生命周期方法的顺序是什么?
+
+    当一个组件的实例被创建并插入到DOM中，生命周期方法按照下面的顺序被调用。
+    1. `constructor()`
+    2. `static getDerivedStateFromProps()`
+    3. `render()`
+    4. `componentDidMount()`
+
+75. ### React v16 什么生命周期方法不赞同使用?
+
+    下面的生命周期方法将是不安全的编码实践，并且在异步呈现方面会有更多的问题。
+
+    1. `componentWillMount()`
+    2. `componentWillReceiveProps()`
+    3. `componentWillUpdate()`
+
+    从react v16.3开始，这些方法的别名是“unsafe”前缀，未修复的版本将在react v17中删除。
+
+76. ### `getDerivedStateFromProps()` 生命周期的目的是什么?
+
+    新的静态生命周期方法 `getDerivedStateFromProps()`，在实例化组件之后以及重新渲染组件之前调用. 它可以返回一个对象来更新state, 或 `null` 表示新 props 不需要任何状态更新。
+
+    ```javascript
+    class MyComponent extends React.Component {
+      static getDerivedStateFromProps(props, state) {
+        // ...
+      }
+    }
+    ```
+
+    此生命周期方法与 `componentdidUpdate()` 一起涵盖 `componentwillReceiveProps()` 的所有使用场景。
+
+77. ### `getSnapshotBeforeUpdate()` 生命周期方法的目的是什么 ?
+
+    新的生命周期方法 `getSnapshotBeforeUpdate()` 在 DOM 更新之前调用. 从这个方法返回的值，将会被传递到 `componentDidUpdate()` 第三个参数中.
+
+    ```javascript
+    class MyComponent extends React.Component {
+      getSnapshotBeforeUpdate(prevProps, prevState) {
+        // ...
+      }
+    }
+    ```
+
+    此生命周期方法与 `componentDidUpdate()` 一起涵盖 `componentWillUpdate()`的所有使用场景。
+
+78. ### createElement() 和 cloneElement() 不同?
+
+    在JSX中，react元素被转换为 `react.createElement()`，表示一个UI元素。而`react.clonelement()`用于克隆元素并传递新的属性。
+
+79. ### 推荐的命名组件的方法是什么?
+
+    建议通过引用来命名组件，而不是使用 `displayname`。
+
+    将 `displayname`用于命名组件：
+
+    ```javascript
+    export default React.createClass({
+      displayName: 'TodoApp',
+      // ...
+    })
+    ```
+
+    **建议的** 方法:
+
+    ```javascript
+    export default class TodoApp extends React.Component {
+      // ...
+    }
+    ```
+
+80. ### 组件类中方法的推荐顺序是什么？
+
+    *建议* 从 *挂载* 到 *渲染阶段* 的方法顺序:
+
+    1. `static`方法
+    2. `constructor()`
+    3. `getChildContext()`
+    4. `componentWillMount()`
+    5. `componentDidMount()`
+    6. `componentWillReceiveProps()`
+    7. `shouldComponentUpdate()`
+    8. `componentWillUpdate()`
+    9. `componentDidUpdate()`
+    10. `componentWillUnmount()`
+    11. 事件处理方法 `onClickSubmit()` 或 `onChangeDescription()`
+    12. 渲染的 getter 方法 `getSelectReason()` 或 `getFooterContent()`
+    13. 可选渲染方法 `renderNavigation()` 或 `renderProfilePicture()`
+    14. `render()`
