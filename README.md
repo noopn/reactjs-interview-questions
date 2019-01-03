@@ -88,6 +88,17 @@
 |78 | [createElement() 和 cloneElement() 不同?](#createElement()和cloneElement()不同) |
 |79 | [推荐的命名组件的方法是什么?](#推荐的命名组件的方法是什么) |
 |80 | [组件类中方法的推荐顺序是什么？](#组件类中方法的推荐顺序是什么) |
+|81 | [什么是 switching 组件?](#什么是switching组件) |
+|82 | [为什么需要给 setState() 传递函数?](#为什么需要给setState()传递函数) |
+|83 | [React 严格模式是是什么?](#React严格模式是是什么) |
+|84 | [什么是 React Mixins?](#什么是React-Mixins) |
+|85 | [为什么 ismounted() 是反模式，正确的解决方案是什么?](#为什么ismounted()是反模式，正确的解决方案是什么) |
+|86 | [What are the Pointer Events supported in React?](#what-are-the-pointer-events-supported-in-react) |
+|87 | [Why should component names start with capital letter?](#why-should-component-names-start-with-capital-letter) |
+|88 | [Are custom DOM attributes supported in React v16?](#are-custom-dom-attributes-supported-in-react-v16) |
+|89 | [What is the difference between constructor and getInitialState?](#what-is-the-difference-between-constructor-and-getinitialstate) |
+|90 | [Can you force a component to re-render without calling setState?](#can-you-force-a-component-to-re-render-without-calling-setstate) |
+
 ## React 核心
 
 1. ### 什么是React？
@@ -1378,3 +1389,209 @@
     12. 渲染的 getter 方法 `getSelectReason()` 或 `getFooterContent()`
     13. 可选渲染方法 `renderNavigation()` 或 `renderProfilePicture()`
     14. `render()`
+
+81. ### 什么是 switching 组件?
+
+    *switching 组件* 是渲染多个组件之一的组件. 需要使用对象将属性值赋值到组件.
+
+    例如, 一个 switching 组件基于 `page` 属性显示不同的页面:
+
+    ```jsx harmony
+    import HomePage from './HomePage'
+    import AboutPage from './AboutPage'
+    import ServicesPage from './ServicesPage'
+    import ContactPage from './ContactPage'
+
+    const PAGES = {
+      home: HomePage,
+      about: AboutPage,
+      services: ServicesPage,
+      contact: ContactPage
+    }
+
+    const Page = (props) => {
+      const Handler = PAGES[props.page] || ContactPage
+
+      return <Handler {...props} />
+    }
+
+    // The keys of the PAGES object can be used in the prop types to catch dev-time errors.
+    Page.propTypes = {
+      page: PropTypes.oneOf(Object.keys(PAGES)).isRequired
+    }
+    ```
+
+82. ### 为什么需要给 setState() 传递函数?
+
+    在这一问题之前的问题就是 `setState()` 是一个异步操作. 为了性能问题 React 批量改变 state, 所以在 `setState()` 被调用之后 state 可能不会立即改变。那意味着你不应该在 `setState()` 调用后依赖于当前的 state,因为你不能确定那个状态是什么. 解决方法是传递一个函数到 `setState()`, 将前一状态作为参数。做了这个便可以解决由于 `setState()` 的异步性质，用户在访问时获取旧的状态值问题。
+    让我们设置初始化的数值为0. 在三次连续的增加操作后,该值将只增加一个。
+
+    ```javascript
+    // assuming this.state.count === 0
+    this.setState({ count: this.state.count + 1 })
+    this.setState({ count: this.state.count + 1 })
+    this.setState({ count: this.state.count + 1 })
+    // this.state.count === 1, not 3
+    ```
+
+    如果传递一个函数到 `setState()`, 计数正确递增。
+
+    ```javascript
+    this.setState((prevState, props) => ({
+      count: prevState.count + props.increment
+    }))
+    // this.state.count === 3 as expected
+    ```
+
+83. ### React 严格模式是是什么?
+
+    `React.StrictMode` 是突出应用程序中潜在问题的有用组件. 就像 `<Fragment>`, `<StrictMode>` 不会渲染任何额外的 DOM 元素. 它为其后代元素触发额外的检查和警告. 这些检查仅适用于 *开发模式*。
+
+    ```jsx harmony
+    import React from 'react'
+
+    function ExampleApplication() {
+      return (
+        <div>
+          <Header />
+          <React.StrictMode>
+            <div>
+              <ComponentOne />
+              <ComponentTwo />
+            </div>
+          </React.StrictMode>
+          <Footer />
+        </div>
+      )
+    }
+    ```
+
+    在上面的示例中，*严格模式* 检查仅适用于 `<componentone>` 和 `<componenttwo>` 组件。
+
+84. ### 什么是 React Mixins?
+
+    *Mixins* 是一种完全分离组件以具有共同功能的方法. Mixins **不应该被使用** 它可以被 *高阶组件* 或 *修饰器* 替换.
+
+    最常用的 *Mixins* 之一是 `purendermixin`。当props和state与之前的props和state略微相等时，您可能在某些组件中使用它来防止不必要的重新渲染：
+
+    ```javascript
+    const PureRenderMixin = require('react-addons-pure-render-mixin')
+
+    const Button = React.createClass({
+      mixins: [PureRenderMixin],
+      // ...
+    })
+    ````
+    <!-- TODO: mixins are deprecated -->
+
+85. ### 为什么 `ismounted()` 是反模式，正确的解决方案是什么?
+
+    `ismounted()`的主要用例是避免在卸载组件后调用 `setstate()`，因为它将发出警告。
+
+    ```javascript
+    if (this.isMounted()) {
+      this.setState({...})
+    }
+    ```
+
+    在 `setState()` 调用前检查 `isMounted()` 消除警告, 但它也破坏了警告的目的. 使用 `ismounted()`是一种code味道，因为您要检查的唯一原因是您认为在卸载组件后可能保存了一个引用。
+
+    最佳解决方案是找到在组件卸载后调用 `setState()` 的位置并修复它们。这种情况最常见的原因是回调，即组件正在等待某些数据，并在数据到达之前卸载。理想情况下，任何回调都应在卸载之前在 `componentwillUnmount()`中取消。
+
+86. ### What are the Pointer Events supported in React?
+
+    *Pointer Events* provide a unified way of handling all input events. In the olden days we have a mouse and respective event listeners to handle them but nowadays we have many devices which don't correlate to having a mouse, like phones with touch surface or pens. We need to remember that these events will only work in browsers that support the *Pointer Events* specification.
+
+    The following event types are now available in *React DOM*:
+
+    1. `onPointerDown`
+    2. `onPointerMove`
+    3. `onPointerUp`
+    4. `onPointerCancel`
+    5. `onGotPointerCapture`
+    6. `onLostPointerCaptur`
+    7. `onPointerEnter`
+    8. `onPointerLeave`
+    9. `onPointerOver`
+    10. `onPointerOut`
+
+87. ### Why should component names start with capital letter?
+
+    If you are rendering your component using JSX, the name of that component has to begin with a capital letter otherwise React will throw an error as unrecognized tag. This convention is because only HTML elements and SVG tags can begin with a lowercase letter.
+
+    You can define component class which name starts with lowercase letter, but when it's imported it should have capital letter. Here lowercase is fine:
+
+    ```jsx harmony
+    class myComponent extends Component {
+      render() {
+        return <div />
+      }
+    }
+
+    export default myComponent
+    ```
+
+    While when imported in another file it should start with capital letter:
+
+    ```jsx harmony
+    import MyComponent from './MyComponent'
+    ```
+
+88. ### Are custom DOM attributes supported in React v16?
+
+    Yes. In the past, React used to ignore unknown DOM attributes. If you wrote JSX with an attribute that React doesn't recognize, React would just skip it. For example, this:
+
+    ```jsx harmony
+    <div mycustomattribute={'something'} />
+    ```
+
+    Would render an empty div to the DOM with React v15:
+
+    ```html
+    <div />
+    ```
+
+    In React v16 any unknown attributes will end up in the DOM:
+
+    ```html
+    <div mycustomattribute='something' />
+    ```
+
+    This is useful for supplying browser-specific non-standard attributes, trying new DOM APIs, and integrating with opinionated third-party libraries.
+
+89. ### What is the difference between constructor and getInitialState?
+
+    You should initialize state in the constructor when using ES6 classes, and `getInitialState()` method when using `React.createClass()`.
+
+    Using ES6 classes:
+
+    ```javascript
+    class MyComponent extends React.Component {
+      constructor(props) {
+        super(props)
+        this.state = { /* initial state */ }
+      }
+    }
+    ```
+
+    Using `React.createClass()`:
+
+    ```javascript
+    const MyComponent = React.createClass({
+      getInitialState() {
+        return { /* initial state */ }
+      }
+    })
+    ```
+
+    **Note:** `React.createClass()` is deprecated and removed in React v16. Use plain JavaScript classes instead.
+
+90. ### Can you force a component to re-render without calling setState?
+
+    By default, when your component's state or props change, your component will re-render. If your `render()` method depends on some other data, you can tell React that the component needs re-rendering by calling `forceUpdate()`.
+
+    ```javascript
+    component.forceUpdate(callback)
+    ```
+
+    It is recommended to avoid all uses of `forceUpdate()` and only read from `this.props` and `this.state` in `render()`.
