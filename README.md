@@ -93,11 +93,11 @@
 |83 | [React 严格模式是是什么?](#React严格模式是是什么) |
 |84 | [什么是 React Mixins?](#什么是React-Mixins) |
 |85 | [为什么 ismounted() 是反模式，正确的解决方案是什么?](#为什么ismounted()是反模式，正确的解决方案是什么) |
-|86 | [What are the Pointer Events supported in React?](#what-are-the-pointer-events-supported-in-react) |
-|87 | [Why should component names start with capital letter?](#why-should-component-names-start-with-capital-letter) |
-|88 | [Are custom DOM attributes supported in React v16?](#are-custom-dom-attributes-supported-in-react-v16) |
-|89 | [What is the difference between constructor and getInitialState?](#what-is-the-difference-between-constructor-and-getinitialstate) |
-|90 | [Can you force a component to re-render without calling setState?](#can-you-force-a-component-to-re-render-without-calling-setstate) |
+|86 | [React中支持哪些指针事件?](#React中支持哪些指针事件) |
+|87 | [为什么组件名字首字母需要大写?](#为什么组件名字首字母需要大写) |
+|88 | [React v16 支持自定义 DOM 属性么?](#React-v16支持自定义DOM属性么) |
+|89 | [constructor 和 getInitialState 区别?](#constructor和getInitialState区别) |
+|90 | [是否可以在不调用setState的情况下强制组件重新呈现?](#是否可以在不调用setState的情况下强制组件重新呈现) |
 
 ## React 核心
 
@@ -1498,11 +1498,11 @@
 
     最佳解决方案是找到在组件卸载后调用 `setState()` 的位置并修复它们。这种情况最常见的原因是回调，即组件正在等待某些数据，并在数据到达之前卸载。理想情况下，任何回调都应在卸载之前在 `componentwillUnmount()`中取消。
 
-86. ### What are the Pointer Events supported in React?
+86. ### React中支持哪些指针事件?
 
-    *Pointer Events* provide a unified way of handling all input events. In the olden days we have a mouse and respective event listeners to handle them but nowadays we have many devices which don't correlate to having a mouse, like phones with touch surface or pens. We need to remember that these events will only work in browsers that support the *Pointer Events* specification.
+    *指针事件* 提供处理所有输入事件的统一方法。在过去，我们有一个鼠标和相应的事件监听器来处理它们，但现在我们有许多设备与鼠标无关。像带触摸屏或笔的手机. 我们需要记住，这些事件只能在支持*指针事件*规范的浏览器中工作。
 
-    The following event types are now available in *React DOM*:
+    以下事件类型现在在*react dom*中可用 *React DOM*:
 
     1. `onPointerDown`
     2. `onPointerMove`
@@ -1515,11 +1515,11 @@
     9. `onPointerOver`
     10. `onPointerOut`
 
-87. ### Why should component names start with capital letter?
+87. ### 为什么组件名字首字母需要大写?
 
-    If you are rendering your component using JSX, the name of that component has to begin with a capital letter otherwise React will throw an error as unrecognized tag. This convention is because only HTML elements and SVG tags can begin with a lowercase letter.
+    如果你是用JSX渲染你的组件, 那个组件的首字母要大写， 否则，react将作为无法识别的标记引发错误. 这种约定是因为只有HTML元素和SVG标记可以以小写字母开头。
 
-    You can define component class which name starts with lowercase letter, but when it's imported it should have capital letter. Here lowercase is fine:
+    您可以定义组件类，名称以小写字母开头，但导入时应该使用大写字母。
 
     ```jsx harmony
     class myComponent extends Component {
@@ -1537,31 +1537,31 @@
     import MyComponent from './MyComponent'
     ```
 
-88. ### Are custom DOM attributes supported in React v16?
+88. ### React v16 支持自定义 DOM 属性么?
 
-    Yes. In the past, React used to ignore unknown DOM attributes. If you wrote JSX with an attribute that React doesn't recognize, React would just skip it. For example, this:
+    是的. 在过去, React 用于忽略未知的DOM属性. 如果编写的JSX具有一个React无法识别的属性, React 会跳过它. 例如:
 
     ```jsx harmony
     <div mycustomattribute={'something'} />
     ```
 
-    Would render an empty div to the DOM with React v15:
+    React v15 将会渲染一个空的 div:
 
     ```html
     <div />
     ```
 
-    In React v16 any unknown attributes will end up in the DOM:
+    React v16 一些未知的属性将会保留在 DOM:
 
     ```html
     <div mycustomattribute='something' />
     ```
 
-    This is useful for supplying browser-specific non-standard attributes, trying new DOM APIs, and integrating with opinionated third-party libraries.
+    这对于提供特定于浏览器的非标准属性、尝试新的 DOM API 以及与固定的第三方库集成非常有用。
 
-89. ### What is the difference between constructor and getInitialState?
+89. ### constructor 和 getInitialState 区别?
 
-    You should initialize state in the constructor when using ES6 classes, and `getInitialState()` method when using `React.createClass()`.
+    使用 ES6 类你应该在constructor 中初始化 state, 在 `React.createClass()` 中使用 `getInitialState()` 方法。
 
     Using ES6 classes:
 
@@ -1584,14 +1584,14 @@
     })
     ```
 
-    **Note:** `React.createClass()` is deprecated and removed in React v16. Use plain JavaScript classes instead.
+    **Note:** `React.createClass()` 在react v16中已弃用并删除。改用普通的javascript类。
 
-90. ### Can you force a component to re-render without calling setState?
+90. ### 是否可以在不调用setState的情况下强制组件重新呈现?
 
-    By default, when your component's state or props change, your component will re-render. If your `render()` method depends on some other data, you can tell React that the component needs re-rendering by calling `forceUpdate()`.
+    默认情况, 当组件的state 或 props 改变,组将将会重渲染. 如果您的 `render()` 方法依赖于其他数据，您可以通过调用`forceUpdate()` 来告诉react组件需要重新呈现。
 
     ```javascript
     component.forceUpdate(callback)
     ```
 
-    It is recommended to avoid all uses of `forceUpdate()` and only read from `this.props` and `this.state` in `render()`.
+    建议避免使用 `forceupdate()` 所有地方，只读取 `render()` 中 `this.props` 和 `this.state`。
