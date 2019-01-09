@@ -98,7 +98,16 @@
 |88 | [React v16 支持自定义 DOM 属性么?](#React-v16支持自定义DOM属性么) |
 |89 | [constructor 和 getInitialState 区别?](#constructor和getInitialState区别) |
 |90 | [是否可以在不调用setState的情况下强制组件重新呈现?](#是否可以在不调用setState的情况下强制组件重新呈现) |
-
+|91 | [React 使用 ES6 类 super() 和 super(props) 区别是什么?](#React使用ES6类super()和super(props)区别是什么) |
+|92 | [如何在JSX中循环?](#如何在JSX中循环) |
+|93 | [如何访问属性引号中的属性?](#如何访问属性引号中的属性) |
+|94 | [React proptype 数组形状?](#React-proptype数组形状) |
+|95 | [How conditionally apply class attributes?](#how-conditionally-apply-class-attributes) |
+|96 | [What is the difference between React and ReactDOM?](#what-is-the-difference-between-react-and-reactdom) |
+|97 | [Why ReactDOM is separated from React?](#why-reactdom-is-separated-from-react) |
+|98 | [How to use React label element?](#how-to-use-react-label-element) |
+|99 | [How to combine multiple inline style objects?](#how-to-combine-multiple-inline-style-objects) |
+|100| [How to re-render the view when the browser is resized?](#how-to-re-render-the-view-when-the-browser-is-resized)
 ## React 核心
 
 1. ### 什么是React？
@@ -1590,8 +1599,179 @@
 
     默认情况, 当组件的state 或 props 改变,组将将会重渲染. 如果您的 `render()` 方法依赖于其他数据，您可以通过调用`forceUpdate()` 来告诉react组件需要重新呈现。
 
+    >默认情况下，当组件的state或props改变时，组件将重新渲染。如果你的render()方法依赖于一些其他的数据，你可以告诉React组件需要通过调用forceUpdate()重新渲染。 调用forceUpdate()会导致组件跳过shouldComponentUpdate(),直接调用render()。这将触发组件的正常生命周期方法,包括每个子组件的shouldComponentUpdate()方法。forceUpdate就是重新render。有些变量不在state上，当时你又想达到这个变量更新的时候，刷新render；或者state里的某个变量层次太深，更新的时候没有自动触发render。这些时候都可以手动调用forceUpdate自动触发render
+
     ```javascript
     component.forceUpdate(callback)
     ```
 
     建议避免使用 `forceupdate()` 所有地方，只读取 `render()` 中 `this.props` 和 `this.state`。
+
+91. ### React 使用 ES6 类 super() 和 super(props) 区别是什么?
+
+    当你需要 `this.props` 在 `constructor()` 中那应该传入 props 到 `super()` 方法中.
+
+    使用 `super(props)`:
+
+    ```javascript
+    class MyComponent extends React.Component {
+      constructor(props) {
+        super(props)
+        console.log(this.props) // { name: 'John', ... }
+      }
+    }
+    ```
+
+    使用 `super()`:
+
+    ```javascript
+    class MyComponent extends React.Component {
+      constructor(props) {
+        super()
+        console.log(this.props) // undefined
+      }
+    }
+    ```
+
+    在 `constructor()` 外面 这两种写法都会显示相同的 `this.props` 的值.
+
+92. ### 如何在JSX中循环?
+
+    可以简单使用 `Array.prototype.map`  ES6 *箭头函数* 语法. 例如,  `items` 数组对象转换成数组组件
+
+    ```jsx harmony
+    <tbody>
+      {items.map(item => <SomeComponent key={item.id} name={item.name} />)}
+    </tbody>
+    ```
+
+    不能使用 `for` 循环:
+
+    ```jsx harmony
+    <tbody>
+      for (let i = 0; i < items.length; i++) {
+        <SomeComponent key={items[i].id} name={items[i].name} />
+      }
+    </tbody>
+    ```
+
+    这是因为JSX标签被转换成*函数调用*，并且不能在表达式中使用语句。这可能会由于 `do` 表达式而改变，这些表达式是*第一阶段建议*。
+
+93. ### 如何访问属性引号中的属性?
+
+    React (或 JSX) 不支持属性值内的变量插值，下面的表达不起作用:
+
+    ```jsx harmony
+    <img className='image' src='images/{this.props.image}' />
+    ```
+
+    但可以将任何JS表达式作为整个属性值放在大括号内。所以下面的表达式是有效的:
+
+    ```jsx harmony
+    <img className='image' src={'images/' + this.props.image} />
+    ```
+
+    使用 *模版字符串* 也同样可以:
+
+    ```jsx harmony
+    <img className='image' src={`images/${this.props.image}`} />
+    ```
+
+94. ### React proptype 数组形状?
+
+    如果要将对象数组传递给具有特定形状的组件，请使用 `react.proptypes.shape()` 作为 `react.proptypes.arrayOf()`的参数。
+
+    ```javascript
+    ReactComponent.propTypes = {
+      arrayWithShape: React.PropTypes.arrayOf(React.PropTypes.shape({
+        color: React.PropTypes.string.isRequired,
+        fontSize: React.PropTypes.number.isRequired
+      })).isRequired
+    }
+    ```
+
+95. ### 如何按条件应用className属性?
+
+    您不应该在引号内使用大括号，因为它将作为字符串进行计算。
+
+    ```jsx harmony
+    <div className="btn-panel {this.props.visible ? 'show' : 'hidden'}">
+    ```
+
+    相反，您需要将大括号移到外部（不要忘记在类名之间包含空格）
+
+    ```jsx harmony
+    <div className={'btn-panel ' + (this.props.visible ? 'show' : 'hidden')}>
+    ```
+
+    *模版字符串* 也将会工作:
+
+    ```jsx harmony
+    <div className={`btn-panel ${this.props.visible ? 'show' : 'hidden'}`}>
+    ```
+
+96. ### What is the difference between React and ReactDOM?
+
+    The `react` package contains `React.createElement()`, `React.Component`, `React.Children`, and other helpers related to elements and component classes. You can think of these as the isomorphic or universal helpers that you need to build components. The `react-dom` package contains `ReactDOM.render()`, and in `react-dom/server` we have *server-side rendering* support with `ReactDOMServer.renderToString()` and `ReactDOMServer.renderToStaticMarkup()`.
+
+97. ### Why ReactDOM is separated from React?
+
+    The React team worked on extracting all DOM-related features into a separate library called *ReactDOM*. React v0.14 is the first release in which the libraries are split. By looking at some of the packages, `react-native`, `react-art`, `react-canvas`, and `react-three`, it has become clear that the beauty and essence of React has nothing to do with browsers or the DOM. To build more environments that React can render to, React team planned to split the main React package into two: `react` and `react-dom`. This paves the way to writing components that can be shared between the web version of React and React Native.
+
+98. ### How to use React label element?
+
+    If you try to render a `<label>` element bound to a text input using the standard `for` attribute, then it produces HTML missing that attribute and prints a warning to the console.
+
+    ```jsx harmony
+    <label for={'user'}>{'User'}</label>
+    <input type={'text'} id={'user'} />
+    ```
+
+    Since `for` is a reserved keyword in JavaScript, use `htmlFor` instead.
+
+    ```jsx harmony
+    <label htmlFor={'user'}>{'User'}</label>
+    <input type={'text'} id={'user'} />
+    ```
+
+99. ### How to combine multiple inline style objects?
+
+    You can use *spread operator* in regular React:
+
+    ```jsx harmony
+     <button style={{...styles.panel.button, ...styles.panel.submitButton}}>{'Submit'}</button>
+    ```
+
+    If you're using React Native then you can use the array notation:
+
+    ```jsx harmony
+    <button style={[styles.panel.button, styles.panel.submitButton]}>{'Submit'}</button>
+    ```
+
+100. ### How to re-render the view when the browser is resized?
+
+     You can listen to the `resize` event in `componentDidMount()` and then update the dimensions (`width` and `height`). You should remove the listener in `componentWillUnmount()` method.
+
+     ```javascript
+     class WindowDimensions extends React.Component {
+       componentWillMount() {
+         this.updateDimensions()
+       }
+
+       componentDidMount() {
+         window.addEventListener('resize', this.updateDimensions)
+       }
+
+       componentWillUnmount() {
+         window.removeEventListener('resize', this.updateDimensions)
+       }
+
+       updateDimensions() {
+         this.setState({width: $(window).width(), height: $(window).height()})
+       }
+
+       render() {
+         return <span>{this.state.width} x {this.state.height}</span>
+       }
+     }
+     ```
