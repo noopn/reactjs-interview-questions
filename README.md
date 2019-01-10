@@ -102,12 +102,12 @@
 |92 | [如何在JSX中循环?](#如何在JSX中循环) |
 |93 | [如何访问属性引号中的属性?](#如何访问属性引号中的属性) |
 |94 | [React proptype 数组形状?](#React-proptype数组形状) |
-|95 | [How conditionally apply class attributes?](#how-conditionally-apply-class-attributes) |
-|96 | [What is the difference between React and ReactDOM?](#what-is-the-difference-between-react-and-reactdom) |
-|97 | [Why ReactDOM is separated from React?](#why-reactdom-is-separated-from-react) |
-|98 | [How to use React label element?](#how-to-use-react-label-element) |
-|99 | [How to combine multiple inline style objects?](#how-to-combine-multiple-inline-style-objects) |
-|100| [How to re-render the view when the browser is resized?](#how-to-re-render-the-view-when-the-browser-is-resized)
+|95 | [如何按条件应用className属性?](#如何按条件应用className属性) |
+|96 | [React 和 ReactDOM 的区别是什么?](#React和ReactDOM的区别是什么) |
+|97 | [为什么 ReactDOM 从 React 中分离?](#为什么ReactDOM从React中分离) |
+|98 | [如何使用 React label 元素?](#如何使用React-label元素) |
+|99 | [怎么组合多个内联样式对象?](#怎么组合多个内联样式对象) |
+|100| [如何在浏览器缩放时重渲染视图?](#如何在浏览器缩放时重渲染视图)
 ## React 核心
 
 1. ### 什么是React？
@@ -1710,47 +1710,47 @@
     <div className={`btn-panel ${this.props.visible ? 'show' : 'hidden'}`}>
     ```
 
-96. ### What is the difference between React and ReactDOM?
+96. ### React 和 ReactDOM 的区别是什么?
 
-    The `react` package contains `React.createElement()`, `React.Component`, `React.Children`, and other helpers related to elements and component classes. You can think of these as the isomorphic or universal helpers that you need to build components. The `react-dom` package contains `ReactDOM.render()`, and in `react-dom/server` we have *server-side rendering* support with `ReactDOMServer.renderToString()` and `ReactDOMServer.renderToStaticMarkup()`.
+    `react` 包括 `React.createElement()`, `React.Component`, `React.Children`,和其他帮助描述元素和类组件. 您可以将这些视为构建组件所需的同构或通用帮助器。 `react-dom` 包括 `ReactDOM.render()`， `react-dom/server` 有`ReactDOMServer.renderToString()` 和 `ReactDOMServer.renderToStaticMarkup()` 支持 *服务端渲染* 。
 
-97. ### Why ReactDOM is separated from React?
+97. ### 为什么 ReactDOM 从 React 中分离?
 
-    The React team worked on extracting all DOM-related features into a separate library called *ReactDOM*. React v0.14 is the first release in which the libraries are split. By looking at some of the packages, `react-native`, `react-art`, `react-canvas`, and `react-three`, it has become clear that the beauty and essence of React has nothing to do with browsers or the DOM. To build more environments that React can render to, React team planned to split the main React package into two: `react` and `react-dom`. This paves the way to writing components that can be shared between the web version of React and React Native.
+    react团队致力于将所有与dom相关的特性提取到一个名为 *react dom* 的单独库中。 React v0.14是第一个分离库的版本。 通过查看一些包“react native”、“react art”、“react canvas”和“react three”，我们可以清楚地看到react的美和本质与浏览器或DOM无关。为了构建更多React可渲染环境，React团队计划将主React包分为两部分：`react` and `react-dom`. 这为编写可在React和React Native的Web版本之间共享的组件铺平了道路。
 
-98. ### How to use React label element?
+98. ### 如何使用 React label 元素?
 
-    If you try to render a `<label>` element bound to a text input using the standard `for` attribute, then it produces HTML missing that attribute and prints a warning to the console.
+    如果尝试使用标准的`for`属性渲染绑定到文本输入的`<label>`元素,则会生成缺少该属性的HTML，并向控制台打印警告。
 
     ```jsx harmony
     <label for={'user'}>{'User'}</label>
     <input type={'text'} id={'user'} />
     ```
 
-    Since `for` is a reserved keyword in JavaScript, use `htmlFor` instead.
+    由于`for`是javascript中的保留关键字，因此请改用`htmlFor`。
 
     ```jsx harmony
     <label htmlFor={'user'}>{'User'}</label>
     <input type={'text'} id={'user'} />
     ```
 
-99. ### How to combine multiple inline style objects?
+99. ### 怎么组合多个内联样式对象?
 
-    You can use *spread operator* in regular React:
+    你可以在 React 中使用 *展开运算符*:
 
     ```jsx harmony
      <button style={{...styles.panel.button, ...styles.panel.submitButton}}>{'Submit'}</button>
     ```
 
-    If you're using React Native then you can use the array notation:
+    如果您使用的是react native，那么可以使用数组表示：
 
     ```jsx harmony
     <button style={[styles.panel.button, styles.panel.submitButton]}>{'Submit'}</button>
     ```
 
-100. ### How to re-render the view when the browser is resized?
+100. ### 如何在浏览器缩放时重渲染视图?
 
-     You can listen to the `resize` event in `componentDidMount()` and then update the dimensions (`width` and `height`). You should remove the listener in `componentWillUnmount()` method.
+    你可以在 `componentDidMount()` 监听 `resize` 事件，并更新他们的尺寸 (`宽度` 和 `高度`). 你应该在 `componentWillUnmount()` 移除方法.
 
      ```javascript
      class WindowDimensions extends React.Component {
