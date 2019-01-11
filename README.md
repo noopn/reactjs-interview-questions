@@ -107,7 +107,18 @@
 |97 | [为什么 ReactDOM 从 React 中分离?](#为什么ReactDOM从React中分离) |
 |98 | [如何使用 React label 元素?](#如何使用React-label元素) |
 |99 | [怎么组合多个内联样式对象?](#怎么组合多个内联样式对象) |
-|100| [如何在浏览器缩放时重渲染视图?](#如何在浏览器缩放时重渲染视图)
+|100| [如何在浏览器缩放时重渲染视图?](#如何在浏览器缩放时重渲染视图) |
+|101| [setState 和 replaceState 方法的却别是什么?](#setState和replaceState方法的却别是什么) |
+|102| [如何监听 state 改变?](#如何监听state改变) |
+|103| [React state 下移除数组元素的建议方法是什么?](#React-state下移除数组元素的建议方法是什么) |
+|104| [是否可以在不渲染HTML的情况下使用React?](#是否可以在不渲染HTML的情况下使用React) |
+|105| [React 如何优雅的打印 JSON?](#React-如何优雅的打印-JSON) |
+|106| [为什么 React 不能更新 prop?](#为什么React不能更新prop) |
+|107| [页面加载时如何让 input 元素获取焦点?](#页面加载时如何让input元素获取焦点) |
+|108| [是否可以更新 state 中的对象（Object）?](#是否可以更新state中的对象（Object）) |
+|109| [为什么函数是 `setState()` 中覆盖object 建议的方法?](#为什么函数是setState()中覆盖object建议的方法) |
+|110| [如何在浏览器中找到运行时的react版本?](#如何在浏览器中找到运行时的react版本) |
+
 ## React 核心
 
 1. ### 什么是React？
@@ -1774,4 +1785,182 @@
          return <span>{this.state.width} x {this.state.height}</span>
        }
      }
+     ```
+101. ### setState 和 replaceState 方法的却别是什么?
+
+     当你使用 `setState()` 合并当前和之前的 states。 `replaceState()` 抛出当前的states, 只替换你提供的. 通常使用`setstate()`，除非您出于某种原因确实需要删除所有以前的键. 你也可以在 `setState()` 中设置state 为 `false`/`null` 以代替 `replaceState()`.
+
+102. ### 如何监听 state 改变?
+
+     下面的生命周期函数会在 state 改变时被调用。 您可以将提供的state和props值与当前state和props进行比较，以确定某些有意义的内容是否发生了更改。
+
+     ```javascript
+     componentWillUpdate(object nextProps, object nextState)
+     componentDidUpdate(object prevProps, object prevState)
+     ```
+
+103. ### React state 下移除数组元素的建议方法是什么?
+
+     一个途径是使用 `Array.prototype.filter()` 方法.
+
+     例如, 让我们创建一个 `removeItem()` 方法用来更新state.
+
+     ```javascript
+     removeItem(index) {
+       this.setState({
+         data: this.state.data.filter((item, i) => i !== index)
+       })
+     }
+     ```
+
+104. ### 是否可以在不渲染HTML的情况下使用React？
+
+     最新版本（大于等于16.2）是可能的。以下是可能的选项：
+
+     ```jsx harmony
+     render() {
+       return false
+     }
+     ```
+
+     ```jsx harmony
+     render() {
+       return null
+     }
+     ```
+
+     ```jsx harmony
+     render() {
+       return []
+     }
+     ```
+
+     ```jsx harmony
+     render() {
+       return <React.Fragment></React.Fragment>
+     }
+     ```
+
+     ```jsx harmony
+     render() {
+       return <></>
+     }
+     ```
+
+     返回 `undefined` 是无效的。
+
+105. ### React 如何优雅的打印 JSON?
+
+     我们可以使用 `<pre>` 标签，以便保留 `json.stringify()`的格式：
+
+     ```jsx harmony
+     const data = { name: 'John', age: 42 }
+
+     class User extends React.Component {
+       render() {
+         return (
+           <pre>
+             {JSON.stringify(data, null, 2)}
+           </pre>
+         )
+       }
+     }
+
+     React.render(<User />, document.getElementById('container'))
+     ```
+
+106. ### 为什么 React 不能更新 prop?
+
+     反应哲学中，props 应该是`不可变的`和`自上而下的`。 这意味着父级可以向子级发送任何属性值，但子级不能修改接收到的属性。
+
+107. ### 页面加载时如何让 input 元素获取焦点?
+
+     你可以通过为 `input` 元素创建 *ref* 达到目的，并在 `componentDidMount()` 使用它:
+
+     ```jsx harmony
+     class App extends React.Component{
+       componentDidMount() {
+         this.nameInput.focus()
+       }
+
+       render() {
+         return (
+           <div>
+             <input
+               defaultValue={'Won\'t focus'}
+             />
+             <input
+               ref={(input) => this.nameInput = input}
+               defaultValue={'Will focus'}
+             />
+           </div>
+         )
+       }
+     }
+
+     ReactDOM.render(<App />, document.getElementById('app'))
+     ```
+
+108. ### 是否可以更新 state 中的对象（Object）?
+
+     1. **调用 `setState()` 通过 state和对象合并:**
+
+         * 使用 `Object.assign()` 创建一个Object的副本:
+
+             ```javascript
+             const user = Object.assign({}, this.state.user, { age: 42 })
+             this.setState({ user })
+             ```
+
+         * 使用 *展开运算符*:
+
+             ```javascript
+             const user = { ...this.state.user, age: 42 }
+             this.setState({ user })
+             ```
+
+     2. **调用 `setState()` 通过一个函数:**
+
+         ```javascript
+         this.setState(prevState => ({
+           user: {
+             ...prevState.user,
+             age: 42
+           }
+         }))
+         ```
+
+109. ### 为什么函数是 `setState()` 中覆盖object 建议的方法？
+
+     为了性能，React 可能会再一次更新中批量调用 `setState()`. 因为 `this.props` 和 `this.state` 可能是异步更新, 不应该依赖它们的值来计算下一个状态。
+
+     此计数器示例将无法按预期更新：
+
+     ```javascript
+     // 错误
+     this.setState({
+       counter: this.state.counter + this.props.increment,
+     })
+     ```
+
+     推荐的方法是通过一个函数调用 `setState()` 而不是一个对象. 该函数将接收前一个状态作为第一个参数，以及应用更新时的props作为第二个参数。
+
+     ```javascript
+     // Correct
+     this.setState((prevState, props) => ({
+       counter: prevState.counter + props.increment
+     }))
+     ```
+
+110. ### 如何在浏览器中找到运行时的react版本?
+
+     可以使用 `React.version` 来获取版本.
+
+     ```jsx harmony
+     const REACT_VERSION = React.version
+
+     ReactDOM.render(
+       <div>{`React version: ${REACT_VERSION}`}</div>,
+       document.getElementById('app')
+     )
      ```
