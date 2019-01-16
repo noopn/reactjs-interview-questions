@@ -118,6 +118,24 @@
 |108| [是否可以更新 state 中的对象（Object）?](#是否可以更新state中的对象（Object）) |
 |109| [为什么函数是 `setState()` 中覆盖object 建议的方法?](#为什么函数是setState()中覆盖object建议的方法) |
 |110| [如何在浏览器中找到运行时的react版本?](#如何在浏览器中找到运行时的react版本) |
+|111| [在你的 create react 应用中加入 polyfill 的方法是什么？](#在你的create-react应用中加入polyfill的方法是什么？) |
+|112| [如何在create react app中使用https而不是http?](#如何在create-react-app中使用https而不是http) |
+|113| [如何避免在create react app中使用相对路径导入?](#如何避免在create-react-app中使用相对路径导入) |
+|114| [如何为React路由器添加谷歌分析?](#如何为React路由器添加谷歌分析) |
+|115| [如何每秒更新组件?](#如何每秒更新组件) |
+|116| [如何在内联样式中添加浏览器前缀?](#如何在内联样式中添加浏览器前缀) |
+|117| [如何使用 React 和 ES6 导入导出组件？](#如何使用React-and-ES6导入导出组件) |
+|118| [为什么React组件名称必须以大写字母开头?](#为什么React组件名称必须以大写字母开头) |
+|119| [为什么组件的 constructor 只被调用一次?](#为什么组件的constructor只被调用一次) |
+|120| [如何定义react中的常量?](#如何定义react中的常量) |
+|121| [如何在React中以编程方式触发单击事件?](#如何在React中以编程方式触发单击事件) |
+|122| [是否可以在普通的react中使用async/await?](#是否可以在普通的react中使用async/await) |
+|123| [React的常见文件夹结构是什么?](#React的常见文件夹结构是什么) |
+|124| [动画的流行库是什么?](#动画的流行库是什么) |
+|125| [样式模块的好处是什么?](#样式模块的好处是什么) |
+|126| [什么语法风格检测是 React 中受欢迎的?](#什么语法风格检测是React中受欢迎的) |
+|127| [如何进行Ajax调用以及应该在哪些组件生命周期方法中进行Ajax调用？](#如何进行Ajax调用以及应该在哪些组件生命周期方法中进行Ajax调用？) |
+|128| [什么是 render props?](#什么是render-props) |
 
 ## React 核心
 
@@ -1964,3 +1982,297 @@
        document.getElementById('app')
      )
      ```
+111. ### 在你的 create react 应用中加入 polyfill 的方法是什么？
+
+     1. **手动从 `core-js` 中引入:**
+
+         创建一个文件叫 (类似的) `polyfills.js` 并在根文件 `index.js` 中引入它. 运行 `npm install core-js` 或 `yarn add core-js` 并导入您所需的特定功能.
+
+         ```javascript
+         import 'core-js/fn/array/find'
+         import 'core-js/fn/array/includes'
+         import 'core-js/fn/number/is-nan'
+         ```
+
+     2. **使用 Polyfill 服务:**
+
+         使用 polyfill.io CDN 来检索, 浏览器 polyfills 通过 `index.html` 中这一行被添加:
+
+         ```html
+         <script src='https://cdn.polyfill.io/v2/polyfill.min.js?features=default,Array.prototype.includes'></script>
+         ```
+
+         在上面的脚本中，我们必须显式地请求 `array.prototype.includes` 功能，因为它不包含在默认功能集中。
+
+         >原型方法没有被自动添加，需要使用 `array.prototype.includes`
+
+112. ### 如何在create react app中使用https而不是http？
+
+     只需要使用 `HTTPS=true` 配置. 你可以编辑 `package.json` 文件:
+
+     ```json
+     "scripts": {
+       "start": "set HTTPS=true && react-scripts start"
+     }
+     ```
+
+     或运行 `set HTTPS=true && npm start`
+
+113. ### 如何避免在create react app中使用相对路径导入?
+
+     创建一个文件叫 `.env` 在项目根目录并写入导入路径:
+
+     ```
+     NODE_PATH=src/app
+     ```
+
+     之后重启开发服务器. 现在，您应该能够在不使用相对路径的情况下导入 `src/app` 中的任何内容。
+
+114. ### 如何为React路由器添加谷歌分析?
+
+     在 `history` 对象上添加侦听器以记录每个页面视图：
+
+     ```javascript
+     history.listen(function (location) {
+       window.ga('set', 'page', location.pathname + location.search)
+       window.ga('send', 'pageview', location.pathname + location.search)
+     })
+     ```
+
+115. ### 如何每秒更新组件?
+
+     你需要使用 `setInterval()` 触发改变, 但同样需要在组件卸载时清除定时器防止错误和内存泄漏。
+     ```javascript
+     componentDidMount() {
+       this.interval = setInterval(() => this.setState({ time: Date.now() }), 1000)
+     }
+
+     componentWillUnmount() {
+       clearInterval(this.interval)
+     }
+     ```
+116. ### 如何在内联样式中添加浏览器前缀?
+
+     React *不支持* 自动添加 *浏览器前缀*. 需要手动添加.
+
+     ```jsx harmony
+     <div style={{
+       transform: 'rotate(90deg)',
+       WebkitTransform: 'rotate(90deg)', // note the capital 'W' here
+       msTransform: 'rotate(90deg)' // 'ms' is the only lowercase vendor prefix
+     }} />
+     ```
+
+117. ### 如何使用 React 和 ES6 导入导出组件?
+
+     应该使用默认值导出组件
+
+     ```jsx harmony
+     import React from 'react'
+     import User from 'user'
+
+     export default class MyProfile extends React.Component {
+       render(){
+         return (
+           <User type="customer">
+             //...
+           </User>
+         )
+       }
+     }
+     ```
+
+     使用导出标识, MyProfile将成为组件并从此模块导出，在其他组件中导入时不用提及它的名字。
+
+118. ### 为什么React组件名称必须以大写字母开头?
+
+     在JSX中，小写标记名被认为是HTML标记。 但是, 大写的和使用 `.` 的小写标签名不是。
+
+     1. `<component />` compiles to `React.createElement('component')` (i.e, HTML tag)
+     2. `<obj.component />` compiles to `React.createElement(obj.component)`
+     3. `<Component />` compiles to `React.createElement(Component)`
+
+119. ### 为什么组件的 constructor 只被调用一次?
+
+     React 的 *调停* 算法， 假定没有任何信息在对立面,如果自定义组件在随后的渲染中出现在同一位置，它与以前的组件相同，因此重用以前的实例，而不是创建新的实例。
+
+120. ### 如何定义react中的常量?
+
+     你可以使用 ES7 `static` 定义常量.
+
+     ```javascript
+     class MyComponent extends React.Component {
+       static DEFAULT_PAGINATION = 10
+     }
+     ```
+
+     *静态字段*是*类字段*阶段3建议的一部分。
+
+121. ### 如何在React中以编程方式触发单击事件?
+
+     可以使用ref属性通过回调获取对基础 `HTMLInputElement` 对象的引用, 将引用存储为类属性, 然后使用该引用稍后使用 `HTMLElement.click` 方法从事件处理程序中触发单击. 这可以通过两个步骤完成:
+
+     1. render 方法中创建 ref:
+
+         ```jsx harmony
+         <input ref={input => this.inputElement = input} />
+         ```
+
+     2. 在事件处理程序中应用Click事件:
+
+         ```javascript
+         this.inputElement.click()
+         ```
+
+122. ### 是否可以在普通的react中使用async/await?
+
+     如果你想在 React 中使用 `async`/`await`, 你需要使用 *Babel* 和 [transform-async-to-generator](https://babeljs.io/docs/en/babel-plugin-transform-async-to-generator) 插件. React Native ships with Babel and a set of transforms.
+
+123. ### React的常见文件夹结构是什么?
+
+     React项目文件结构有两种常见做法。
+
+     1. **按领域模型或路由分组：**
+
+         构造项目的一种常见方法是将CSS、JS和测试放在一起，按领域模型或路由分组。
+
+         ```
+         common/
+         ├─ Avatar.js
+         ├─ Avatar.css
+         ├─ APIUtils.js
+         └─ APIUtils.test.js
+         feed/
+         ├─ index.js
+         ├─ Feed.js
+         ├─ Feed.css
+         ├─ FeedStory.js
+         ├─ FeedStory.test.js
+         └─ FeedAPI.js
+         profile/
+         ├─ index.js
+         ├─ Profile.js
+         ├─ ProfileHeader.js
+         ├─ ProfileHeader.css
+         └─ ProfileAPI.js
+         ```
+
+     2. **按文件类型分组**
+
+         另一种流行的项目结构方法是将类似的文件组合在一起。
+
+         ```
+         api/
+         ├─ APIUtils.js
+         ├─ APIUtils.test.js
+         ├─ ProfileAPI.js
+         └─ UserAPI.js
+         components/
+         ├─ Avatar.js
+         ├─ Avatar.css
+         ├─ Feed.js
+         ├─ Feed.css
+         ├─ FeedStory.js
+         ├─ FeedStory.test.js
+         ├─ Profile.js
+         ├─ ProfileHeader.js
+         └─ ProfileHeader.css
+         ```
+
+124. ### 动画的流行库是什么?
+
+     *React Transition Group* 和 *React Motion* React生态系统中流行的动画库.
+
+125. ### 样式模块的好处是什么？
+
+     建议避免在组件中对样式值进行硬编码。任何可能在不同的UI组件之间使用的值都应该提取到它们自己的模块中。
+
+     例如，可以将这些样式提取到单独的组件中：
+
+     ```javascript
+     export const colors = {
+       white,
+       black,
+       blue
+     }
+
+     export const space = [
+       0,
+       8,
+       16,
+       32,
+       64
+     ]
+     ```
+
+     然后在其他组件中单独导入：
+
+     ```javascript
+     import { space, colors } from './styles'
+     ```
+
+126. ### 什么语法风格检测是 React 中受欢迎的?
+     ESLint is a popular JavaScript linter. There are plugins available that analyse specific code styles. One of the most common for React is an npm package called `eslint-plugin-react`. By default, it will check a number of best practices, with rules checking things from keys in iterators to a complete set of prop types. Another popular plugin is `eslint-plugin-jsx-a11y`, which will help fix common issues with accessibility. As JSX offers slightly different syntax to regular HTML, issues with `alt` text and `tabindex`, for example, will not be picked up by regular plugins.
+     >ESLint 是一个受欢迎的React语法风格检测. 代码风格特异性分析中有用的插件. React最常见的一个是名为`eslint-plugin-react`的NPM包。默认情况下，它将检查一些最佳实践， 使用规则检查从迭代器中的键到一组完整的属性类型。 另一个流行的插件是`eslint-plugin-jsx-a11y`, 这将有助于解决可访问性的常见问题。由于JSX为常规HTML提供了稍有不同的语法，例如，`alt` 文本和`tabindex` 的问题不会被常规插件发现。 例如，常规插件将不会接收。
+
+127. ### 如何进行Ajax调用以及应该在哪些组件生命周期方法中进行Ajax调用？
+
+     您可以使用Ajax库，如AXIOS、JQueryAjax和浏览器内置的 `fetch`。您应该在`componentdidmount()`生命周期方法中获取数据。这样，您就可以在检索数据时使用`setState()`更新组件。
+
+     例如，从API中获取员工列表并设置本地状态：
+
+     ```jsx harmony
+     class MyComponent extends React.Component {
+       constructor(props) {
+         super(props)
+         this.state = {
+           employees: [],
+           error: null
+         }
+       }
+
+       componentDidMount() {
+         fetch('https://api.example.com/items')
+           .then(res => res.json())
+           .then(
+             (result) => {
+               this.setState({
+                 employees: result.employees
+               })
+             },
+             (error) => {
+               this.setState({ error })
+             }
+           )
+       }
+
+       render() {
+         const { error, employees } = this.state
+         if (error) {
+           return <div>Error: {error.message}</div>;
+         } else {
+           return (
+             <ul>
+               {employees.map(item => (
+                 <li key={employee.name}>
+                   {employee.name}-{employees.experience}
+                 </li>
+               ))}
+             </ul>
+           )
+         }
+       }
+     }
+     ```
+
+128. ### 什么是 render props?
+
+     **Render Props** 是指一种在 React 组件之间使用一个值为函数的 prop 在 React 组件间共享代码的简单技术。下面的组件使用的render 属性返回react元素。
+
+     ```jsx harmony
+     <DataProvider render={data => (
+       <h1>{`Hello ${data.target}`}</h1>
+     )}/>
+     ```
+
+     像 React Router 和 DownShift这样的库使用这种模式。
