@@ -148,6 +148,13 @@
 |137| [如何实现默认或未找到页？](#如何实现默认或未找到页) |
 |138| [如何在 React Router v4 中获取 history？](#如何在React-Router-v4中获取history) |
 |139| [如何在登录后执行自动重定向？](#如何在登录后执行自动重定向) |
+|   | **React 国际化** |
+|140| [什么是 React Intl?](#什么是React-Intl) |
+|141| [React Intl 主要特性是什么?](#React-Intl主要特性是什么) |
+|142| [React Intl 中两种格式化的方式是什么?](#React-Intl中两种格式化的方式是什么) |
+|143| [React Intl 中如何使用 `<FormattedMessage>` 作为 placeholder?](#React-Intl中如何使用FormattedMessage作为placeholder) |
+|144| [如何使用 React Intl 访问当前区域设置？](#如何使用React-Intl访问当前区域设置) |
+|145| [如何使用 React Intl 格式化日期?](#如何使用React-Intl格式化日期) |
 
 ## React 核心
 
@@ -2500,4 +2507,103 @@
          }
        }
      }
+     ```
+## React 国际化
+
+140. ### 什么是 React Intl?
+
+     *react intl*库使react的内部化变得简单，它有现成的组件和一个可以处理从格式化字符串、日期和数字到复数的一切内容的API。react intl是*formatjs*的一部分，它提供绑定以通过其组件和API进行响应。
+
+141. ### React Intl 主要特性是什么?
+
+     1. 使用分隔符显示数字.
+     2. 正确显示日期和时间.
+     3. 显示相对于“现在”的日期.
+     4. 在多元化的字符串标签.
+     5. 支持150多种语言.
+     6. 在浏览器和节点中运行.
+     7. 以标准为基础.
+
+142. ### React Intl 中两种格式化的方式是什么?
+
+     库提供了两种格式化字符串、数字和日期的方法：React组件或API。
+
+     ```jsx harmony
+     <FormattedMessage
+       id={'account'}
+       defaultMessage={'The amount is less than minimum balance.'}
+     />
+     ```
+
+     ```javascript
+     const messages = defineMessages({
+       accountMessage: {
+         id: 'account',
+         defaultMessage: 'The amount is less than minimum balance.',
+       }
+     })
+
+     formatMessage(messages.accountMessage)
+     ```
+
+143. ### React Intl 中如何使用 `<FormattedMessage>` 作为 placeholder?
+
+     来自 `react-intl` 的组件 `<Formatted... />` 返回元素, 不是纯文本, placeholder, alt 文本等。 在那种情况下, 你应该使用低等级 API `formatMessage()`. 你可以使用高阶组件 `injectIntl()` 在你的组件中注入 `intl`，在那个对象中使用获得的 `formatMessage()`方法格式化 。
+
+     ```jsx harmony
+     import React from 'react'
+     import { injectIntl, intlShape } from 'react-intl'
+
+     const MyComponent = ({ intl }) => {
+       const placeholder = intl.formatMessage({id: 'messageId'})
+       return <input placeholder={placeholder} />
+     }
+
+     MyComponent.propTypes = {
+       intl: intlShape.isRequired
+     }
+
+     export default injectIntl(MyComponent)
+     ```
+
+144. ### 如何使用 React Intl 访问当前区域设置?
+
+     可以使用 `injectIntl()` 在应用程序的任何组件中获取当前区域设置：
+
+     ```jsx harmony
+     import { injectIntl, intlShape } from 'react-intl'
+
+     const MyComponent = ({ intl }) => (
+       <div>{`The current locale is ${intl.locale}`}</div>
+     )
+
+     MyComponent.propTypes = {
+       intl: intlShape.isRequired
+     }
+
+     export default injectIntl(MyComponent)
+     ```
+
+145. ### 如何使用 React Intl 格式化日期?
+
+     `injectIntl()` 高阶组件将会通过组件的属性给你访问 `formatDate()` 方法的能力。 `formatted date` 的实例在内部使用该方法，它返回格式化日期的字符串表示形式。
+
+     ```jsx harmony
+     import { injectIntl, intlShape } from 'react-intl'
+
+     const stringDate = this.props.intl.formatDate(date, {
+       year: 'numeric',
+       month: 'numeric',
+       day: 'numeric'
+     })
+
+     const MyComponent = ({intl}) => (
+       <div>{`The formatted date is ${stringDate}`}</div>
+     )
+
+     MyComponent.propTypes = {
+       intl: intlShape.isRequired
+     }
+
+     export default injectIntl(MyComponent)
      ```
