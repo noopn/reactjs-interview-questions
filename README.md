@@ -155,6 +155,13 @@
 |143| [React Intl 中如何使用 `<FormattedMessage>` 作为 placeholder?](#React-Intl中如何使用FormattedMessage作为placeholder) |
 |144| [如何使用 React Intl 访问当前区域设置？](#如何使用React-Intl访问当前区域设置) |
 |145| [如何使用 React Intl 格式化日期?](#如何使用React-Intl格式化日期) |
+|   | **React Testing** |
+|146| [React 测试中什么是 Shallow Renderer ?](#React测试中什么是Shallow-Renderer) |
+|147| [React 中 TestRenderer 包是什么?](#React中TestRenderer包是什么) |
+|148| [ReactTestUtils 包的目的是什么?](#ReactTestUtils包的目的是什么) |
+|149| [什么是 Jest?](#什么是Jest) |
+|150| [Jest 比 Jasmine有什么好处?](#Jest比Jasmine有什么好处) |
+|151| [给出一个简单的Jest测试用例示例](#给出一个简单的Jest测试用例示例) |
 
 ## React 核心
 
@@ -2606,4 +2613,117 @@
      }
 
      export default injectIntl(MyComponent)
+     ```
+## React Testing
+
+146. ### React 测试中什么是 Shallow Renderer?
+
+     *Shallow rendering* 对于在 React 中编写单元测试用例很有用. 它允许您渲染一个组件*一级深度*并断言他 render 方法的返回值, 无需担心子组件未实例化或渲染的行为。
+
+     例如，如果你有如下的组件:
+
+     ```javascript
+     function MyComponent() {
+       return (
+         <div>
+           <span className={'heading'}>{'Title'}</span>
+           <span className={'description'}>{'Description'}</span>
+         </div>
+       )
+     }
+     ```
+
+     那么你可以像如下断言:
+
+     ```jsx harmony
+     import ShallowRenderer from 'react-test-renderer/shallow'
+
+     // in your test
+     const renderer = new ShallowRenderer()
+     renderer.render(<MyComponent />)
+
+     const result = renderer.getRenderOutput()
+
+     expect(result.type).toBe('div')
+     expect(result.props.children).toEqual([
+       <span className={'heading'}>{'Title'}</span>,
+       <span className={'description'}>{'Description'}</span>
+     ])
+     ```
+
+147. ### React 中 `TestRenderer` 包是什么?
+
+     这个包提供了一个可以用来渲染组件为纯 JavaScript 对象的渲染器。无序依赖 DOM 或原生移动环境。这个包可以很容易地抓取由 ReactDOM 或 React Native 渲染的平台视图层次结构（类似于dom树）的快照，而无需使用浏览器或 `jsdom`。
+
+     ```jsx harmony
+     import TestRenderer from 'react-test-renderer'
+
+     const Link = ({page, children}) => <a href={page}>{children}</a>
+
+     const testRenderer = TestRenderer.create(
+       <Link page={'https://www.facebook.com/'}>{'Facebook'}</Link>
+     )
+
+     console.log(testRenderer.toJSON())
+     // {
+     //   type: 'a',
+     //   props: { href: 'https://www.facebook.com/' },
+     //   children: [ 'Facebook' ]
+     // }
+     ```
+
+148. ### ReactTestUtils 包的目的是什么?
+
+     *ReactTestUtils* 在 `with addons` 包中提供，允许您针对模拟的DOM执行操作，以进行单元测试。
+
+149. ### 什么是 Jest?
+
+     *jest* 是facebook基于jasmine创建的一个javascript单元测试框架，提供自动模拟创建和 `jsdom` 环境。它通常用于测试组件。
+
+150. ### Jest 比 Jasmine有什么好处?
+
+      与Jasmine 相比有几种有点:
+
+     - 自动查找要在源代码中执行的测试.
+     - 运行测试时自动模拟依赖项.
+     - 允许您同步测试异步代码.
+     - 使用假DOM实现（通过`jsdom`）运行测试，以便可以在命令行上运行测试。.
+     - 在并行进程中运行测试，以便它们更快完成.
+
+151. ### 给出一个简单的Jest测试用例示例
+
+     让我们为在`sum.js`文件中添加两个数字的函数编写一个测试：
+
+     ```javascript
+     const sum = (a, b) => a + b
+
+     export default sum
+     ```
+
+     创建一个名为`sum.test.js`的文件，其中包含实际测试：
+
+     ```javascript
+     import sum from './sum'
+
+     test('adds 1 + 2 to equal 3', () => {
+       expect(sum(1, 2)).toBe(3)
+     })
+     ```
+
+     然后将以下部分添加到`package.json`中：
+
+     ```json
+     {
+       "scripts": {
+         "test": "jest"
+       }
+     }
+     ```
+     
+     最后，运行`yarn test`或 `npm test`，Jest将打印结果：
+
+     ```console
+     $ yarn test
+     PASS ./sum.test.js
+     ✓ adds 1 + 2 to equal 3 (2ms)
      ```
